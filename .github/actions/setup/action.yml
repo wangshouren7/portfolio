@@ -7,11 +7,16 @@ runs:
     - shell: bash
       run: corepack enable
 
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Check out code
       uses: actions/setup-node@v4
       with:
-        node-version: 20
-        cache: "pnpm"
+          fetch-depth: 2
 
-    - shell: bash
-      run: pnpm install --frozen-lockfile
+    - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+    - name: Install dependencies
+        run: pnpm install --frozen-lockfile
