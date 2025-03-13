@@ -10,7 +10,7 @@ on:
       - "*.cts"
       - "*.mts"
       - "*.json"
-      - "**/workflows/**"
+      - ".github/**"
 
 env:
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
