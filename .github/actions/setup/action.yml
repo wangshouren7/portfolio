@@ -10,13 +10,14 @@ runs:
     - name: Check out code
       uses: actions/setup-node@v4
       with:
-          fetch-depth: 2
+        fetch-depth: 2
 
     - name: Setup Node.js environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: "pnpm"
 
     - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      shell: bash
+      run: pnpm install --frozen-lockfile
