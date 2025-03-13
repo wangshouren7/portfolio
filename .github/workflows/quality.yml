@@ -1,0 +1,31 @@
+name: Quality
+
+on:
+  push:
+    paths:
+      - "*.ts"
+      - "*.js"
+      - "*.mjs"
+      - "*.cjs"
+      - "*.cts"
+      - "*.mts"
+      - "*.json"
+
+env:
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ vars.TURBO_TOKEN }}
+  TURBO_REMOTE_ONLY: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 📥 Install dependencies
+        uses: ./.github/actions/setup
+
+      - name: Run check tasks with Turbo
+        run: |
+          pnpm turbo lint check-types

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "lint": {
+      "inputs": [
+        "src/**/*",
+        "scripts/**/*",
+        "test/**/*",
+        "libs/**/*",
+        "app/**/*",
+        "tests/**/*"
+      ]
+    },
+    "check-types": {
+      "inputs": [
+        "src/**/*",
+        "scripts/**/*",
+        "test/**/*",
+        "libs/**/*",
+        "app/**/*",
+        "tests/**/*"
+      ]
+    }
+  }
+}
