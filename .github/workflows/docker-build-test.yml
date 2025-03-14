@@ -24,7 +24,7 @@ jobs:
       - name: 测试 Docker 构建
         uses: docker/build-push-action@v5
         with:
-          context: ./apps/dapp-token-exchange/contracts
+          context: .
           file: ./docker/Contract.Dockerfile
           # 设置为false表示只构建不推送
           push: false
