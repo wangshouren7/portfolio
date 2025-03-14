@@ -4,20 +4,16 @@ description: "Common setup steps for Actions"
 runs:
   using: composite
   steps:
-    - shell: bash
+    - name: git checkout
+      uses: actions/checkout@v4
+      
+    - name: Enable Corepack before setting up Node
       run: corepack enable
 
-    - name: Check out code
-      uses: actions/setup-node@v4
-      with:
-        fetch-depth: 2
-
-    - name: Setup Node.js environment
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 20
         cache: "pnpm"
 
-    - name: Install dependencies
-      shell: bash
-      run: pnpm install --frozen-lockfile
+    - run: pnpm install --frozen-lockfile
