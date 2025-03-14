@@ -1,5 +1,5 @@
 import hre from "hardhat";
-import deployedAddresses from "../ignition/deployments/chain-31337/deployed_addresses.json";
+import { getLocalhostDeployedAddressesJSON } from "./utils";
 
 /**
  * Get 10 accounts, each account does:
@@ -14,6 +14,8 @@ import deployedAddresses from "../ignition/deployments/chain-31337/deployed_addr
  */
 async function seed() {
   console.log("🌱 Seeding the blockchain with initial data...");
+
+  const deployedAddresses = await getLocalhostDeployedAddressesJSON();
 
   // Get contract instances
   const Token = await hre.ethers.getContractAt(
