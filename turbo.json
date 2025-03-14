@@ -15,6 +15,11 @@
     "check-types": {
       "inputs": ["src/**", "scripts/**", "test/**", "tests/**"],
       "dependsOn": ["compile"]
+    },
+    "build": {
+      "dependsOn": ["^compile"],
+      "inputs": ["src/**"],
+      "outputs": [".next/**"]
     }
   }
 }

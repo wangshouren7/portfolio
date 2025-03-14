@@ -4,7 +4,7 @@
   "type": "module",
   "exports": {
     "./next": "./src/next/index.ts",
-    "./postcss": "./src/postcss.ts",
+    "./postcss": "./src/postcss.mjs",
     "./rollup": "./src/rollup.ts",
     "./tailwindcss": "./src/tailwindcss.ts",
     "./storybook": "./src/storybook.ts",

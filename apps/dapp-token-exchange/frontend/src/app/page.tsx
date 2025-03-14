@@ -7,18 +7,18 @@ import { Trades } from "@/ui/trades";
 
 export default function Page() {
   return (
-    <div className="gap-4 p-4 grid h-full min-h-[800px] min-w-[1600px] grid-cols-3 overflow-auto">
-      <div className="gap-4 grid grid-rows-2 overflow-auto">
+    <div className="grid h-full min-h-[800px] min-w-[1600px] grid-cols-3 gap-4 overflow-auto p-4">
+      <div className="grid grid-rows-2 gap-4 overflow-auto">
         <Balance />
         <NewOrder />
       </div>
 
-      <div className="gap-4 grid grid-rows-2 overflow-auto">
+      <div className="grid grid-rows-2 gap-4 overflow-auto">
         <OrderBook />
         <Trades />
       </div>
 
-      <div className="gap-4 grid grid-rows-2 overflow-auto">
+      <div className="grid grid-rows-2 gap-4 overflow-auto">
         <PriceChart />
         <MyTransactions />
       </div>

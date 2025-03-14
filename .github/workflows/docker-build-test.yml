@@ -1,0 +1,39 @@
+name: Docker 构建测试
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/dapp-token-exchange/contracts/**"
+      - "docker/**"
+      - ".github/workflows/docker-build-test.yml"
+  # 手动触发选项很适合测试阶段
+  workflow_dispatch:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 测试 Docker 构建
+        uses: docker/build-push-action@v5
+        with:
+          context: ./apps/dapp-token-exchange/contracts
+          file: ./docker/Contract.Dockerfile
+          # 设置为false表示只构建不推送
+          push: false
+          # 可以给测试构建添加一个临时标签
+          tags: dapp-token-exchange-contracts:test
+          build-args: |
+            PACKAGE_NAME=@pfl-wsr/dapp-token-exchange-contracts
+          # 使用缓存加速测试
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          # 这个选项使构建完成后不会删除镜像，方便调试
+          load: true

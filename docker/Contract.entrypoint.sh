@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+
+# 启动hardhat节点在后台运行
+echo "启动Hardhat节点..."
+pnpm turbo @pfl-wsr/dapp-token-exchange-contracts hardhat node &
+
+# 等待节点启动（给节点一些启动时间）
+echo "等待节点启动..."
+sleep 10
+
+# 部署合约到本地网络
+echo "开始部署合约..."
+pnpm turbo @pfl-wsr/dapp-token-exchange-contracts deploy:localhost
+
+# 保持容器运行
+echo "合约已部署，节点继续运行中..."
+tail -f /dev/null 

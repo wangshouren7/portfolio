@@ -62,7 +62,7 @@ const Balance: React.FC<IComponentBaseProps> = (props) => {
                 </Tooltip>
               </TableCell>
               <TableCell>
-                <div className="gap-2 flex">
+                <div className="flex gap-2">
                   <Input
                     className="min-w-20"
                     type="number"

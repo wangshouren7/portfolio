@@ -20,13 +20,13 @@ export const PanelCard: React.FC<IPanelCardProps> = (props) => {
     <Card className="flex h-full flex-col overflow-auto">
       <CardHeader>
         <CardTitle>
-          <div className="gap-2 flex items-center">
+          <div className="flex items-center gap-2">
             {props.title} {props.extra}
           </div>
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="gap-4 flex flex-1 flex-col overflow-auto">
+      <CardContent className="flex flex-1 flex-col gap-4 overflow-auto">
         {props.children}
       </CardContent>
     </Card>,
