@@ -2,15 +2,6 @@ name: Quality
 
 on:
   push:
-    paths:
-      - "*.ts"
-      - "*.js"
-      - "*.mjs"
-      - "*.cjs"
-      - "*.cts"
-      - "*.mts"
-      - "*.json"
-      - ".github/**"
 
 env:
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
