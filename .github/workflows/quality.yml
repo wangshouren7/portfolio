@@ -23,9 +23,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup
-        uses: ./.github/actions/setup
+        uses: ./.github/actions/setup-node
 
       - name: Run check tasks with Turbo
         run: |
