@@ -3,7 +3,13 @@
   "tasks": {
     "compile": {
       "inputs": ["src/**/*", "contracts/**/*"],
-      "dependsOn": ["^compile"]
+      "dependsOn": ["^compile"],
+      "outputs": [
+        "dist/**/*",
+        "cache/**/*",
+        "artifacts/**/*",
+        "typechain-types/**/*"
+      ]
     },
     "lint": {
       "inputs": ["src/**/*", "scripts/**/*", "test/**/*", "tests/**/*"]
