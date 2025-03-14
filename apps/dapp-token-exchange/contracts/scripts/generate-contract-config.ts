@@ -1,13 +1,13 @@
 import { writeFileSync } from "fs";
 import { artifacts } from "hardhat";
 import { format } from "prettier";
+import { getLocalhostDeployedAddressesJSON } from "./utils";
 
 async function generateContractConfig(contractName: string) {
-  const address = (
-    (await import(
-      "../ignition/deployments/chain-31337/deployed_addresses.json"
-    )) as unknown as Record<string, string>
-  )[`${contractName}Module#${contractName}`];
+  const address = (await getLocalhostDeployedAddressesJSON())[
+    `${contractName}Module#${contractName}`
+  ];
+
   const config = await artifacts.readArtifact(contractName);
 
   const contractConfig = {

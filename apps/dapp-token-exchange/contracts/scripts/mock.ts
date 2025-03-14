@@ -1,8 +1,8 @@
 import hre from "hardhat";
-import deployedAddresses from "../ignition/deployments/chain-31337/deployed_addresses.json";
 import { type HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 import { formatEther, parseEther } from "ethers";
 import { type Exchange, type Token } from "../typechain-types";
+import { getLocalhostDeployedAddressesJSON } from "./utils";
 
 // Constants for simulation
 const ETHER_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -53,6 +53,8 @@ class Mocker {
   constructor() {}
 
   async init() {
+    const deployedAddresses = await getLocalhostDeployedAddressesJSON();
+
     // Get contract instances
     this.token = await hre.ethers.getContractAt(
       "Token",
