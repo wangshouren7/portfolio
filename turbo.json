@@ -1,25 +1,16 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
+    "compile": {
+      "inputs": ["src/**/*", "contracts/**/*"],
+      "dependsOn": ["^compile"]
+    },
     "lint": {
-      "inputs": [
-        "src/**/*",
-        "scripts/**/*",
-        "test/**/*",
-        "libs/**/*",
-        "app/**/*",
-        "tests/**/*"
-      ]
+      "inputs": ["src/**/*", "scripts/**/*", "test/**/*", "tests/**/*"]
     },
     "check-types": {
-      "inputs": [
-        "src/**/*",
-        "scripts/**/*",
-        "test/**/*",
-        "libs/**/*",
-        "app/**/*",
-        "tests/**/*"
-      ]
+      "inputs": ["src/**/*", "scripts/**/*", "test/**/*", "tests/**/*"],
+      "dependsOn": ["^compile"]
     }
   }
 }

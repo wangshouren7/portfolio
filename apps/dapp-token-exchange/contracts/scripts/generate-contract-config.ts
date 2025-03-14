@@ -23,6 +23,11 @@ async function generateContractConfig(contractName: string) {
     }, {});
 
   const code = `
+  /**
+   * The contract config for Frontend usage.
+   * 
+   * Automatically generated.
+   * /
   const ${`${contractName}_Contract_Config`.toUpperCase()} = ${JSON.stringify(contractConfig, null, 2)} as const;
 
     const ${`${contractName}_Contract_Events`.toUpperCase()} = ${JSON.stringify(events, null, 2)} as const;
