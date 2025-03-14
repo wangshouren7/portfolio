@@ -15,4 +15,9 @@ pnpm turbo @pfl-wsr/dapp-token-exchange-contracts deploy:localhost
 
 # 保持容器运行
 echo "合约已部署，节点继续运行中..."
+
+# 启动前端
+echo "启动前端..."
+node ./standalone/server.js
+
 tail -f /dev/null 
