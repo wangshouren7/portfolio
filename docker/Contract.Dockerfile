@@ -39,6 +39,6 @@ RUN adduser --system --uid 1001 app
 USER app
  
 # 启动一个持久运行的hardhat节点并部署合约
-COPY --from=builder --chown=app:nodejs ./docker/Contract.entrypoint.sh /app/Contract.entrypoint.sh
+COPY --chown=app:nodejs --from=builder ./docker/Contract.entrypoint.sh /app/Contract.entrypoint.sh
 RUN chmod +x /app/Contract.entrypoint.sh
 CMD ["/app/Contract.entrypoint.sh"]
