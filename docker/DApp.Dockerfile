@@ -5,18 +5,18 @@ ENV PATH="$PNPM_HOME:$PATH"
 
 RUN corepack enable
 
+RUN apk update && apk add --no-cache libc6-compat
+
 RUN pnpm install turbo@^2 -g
 
 FROM base AS builder
-RUN apk update
-RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY . .
-
 RUN turbo prune @pfl-wsr/dapp-token-exchange-contracts @pfl-wsr/dapp-token-exchange-frontend --docker
 
 FROM base AS runner
 WORKDIR /app
+RUN apk update && apk add --no-cache python3 make g++
 
 # First install the dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
