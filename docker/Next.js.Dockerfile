@@ -1,5 +1,7 @@
 FROM node:18-alpine AS base
 
+RUN corepack enable
+
 ########################################################
 # builder: use `turbo prune` to prune app files
 ########################################################
