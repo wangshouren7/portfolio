@@ -26,18 +26,18 @@ RUN pnpm install --frozen-lockfile
 COPY --from=builder /app/out/full/ .
 RUN pnpm turbo compile build
 
-# Copy the frontend built files (standalone)
-COPY /app/apps/dapp-token-exchange/frontend/.next/standalone/apps/dapp-token-exchange/frontend ./standalone
-COPY /app/apps/dapp-token-exchange/frontend/.next/static ./standalone/.next/static
-COPY /app/apps/dapp-token-exchange/frontend/public ./standalone/public
-
-# Remove frontend package (standalone)
-RUN rm -rf /app/apps/dapp-token-exchange/frontend
-
 # Don't run production as root
 RUN addgroup --system --gid 1001 app
 RUN adduser --system --uid 1001 runner
 USER runner
+
+# Copy the frontend built files (standalone)
+COPY --chown=runner:app /app/apps/dapp-token-exchange/frontend/.next/standalone/apps/dapp-token-exchange/frontend ./standalone
+COPY --chown=runner:app /app/apps/dapp-token-exchange/frontend/.next/static ./standalone/.next/static
+COPY --chown=runner:app /app/apps/dapp-token-exchange/frontend/public ./standalone/public
+
+# Remove frontend package (standalone)
+RUN rm -rf /app/apps/dapp-token-exchange/frontend
  
 COPY --chown=runner:app docker/Contract.entrypoint.sh /app/Contract.entrypoint.sh
 RUN chmod +x /app/Contract.entrypoint.sh
