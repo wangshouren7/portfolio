@@ -28,6 +28,11 @@
     "test": {
       "inputs": ["src/**/*", "app/**/*", "tests/**/*", "test/**/*"],
       "dependsOn": ["compile"]
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false,
+      "dependsOn": ["^compile"]
     }
   }
 }

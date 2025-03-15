@@ -11,6 +11,7 @@ import {
 import { decorateOrder, type IDecoratedOrder } from "./decorate-order";
 import { contracts } from "@/contracts";
 import { useAsyncFnWithToast } from "@/lib/use-async-fn-with-toast";
+import { logger } from "@/lib/logger";
 
 export const useOrders = () => {
   const queryClient = useQueryClient();
@@ -73,31 +74,98 @@ export const useOrders = () => {
 
   const fillOrder = useAsyncFnWithToast(
     async (order: IDecoratedOrder) => {
-      await writeContractAsync({
-        ...contracts.Exchange.config,
-        functionName: "fillOrder",
-        args: [order.id],
-      });
+      try {
+        logger.info({
+          message: "尝试填充订单",
+          data: {
+            orderId: order.id.toString(),
+            orderType:
+              order.orderType === contracts.Exchange.EOrderType.BUY
+                ? "购买"
+                : "出售",
+            orderUser: order.user,
+            etherAmount: order.etherAmount.toString(),
+            tokenAmount: order.tokenAmount.toString(),
+            etherAmountFormatted: order.etherAmountFormatted,
+            tokenAmountFormatted: order.tokenAmountFormatted,
+            tokenPrice: order.tokenPrice,
+          },
+        });
 
-      reload();
+        await writeContractAsync({
+          ...contracts.Exchange.config,
+          functionName: "fillOrder",
+          args: [order.id],
+        });
+
+        logger.info({
+          message: "订单填充成功",
+          data: {
+            orderId: order.id.toString(),
+          },
+        });
+
+        reload();
+      } catch (error) {
+        logger.error({
+          message: "合约执行失败：填充订单时发生错误",
+          error,
+          data: {
+            orderId: order.id.toString(),
+            orderType:
+              order.orderType === contracts.Exchange.EOrderType.BUY
+                ? "购买"
+                : "出售",
+            orderUser: order.user,
+          },
+        });
+        throw error; // 重新抛出错误，以便toast能够捕获并显示
+      }
     },
     {
-      success: "Order filled",
+      success: "订单已成功填充",
+      error: "填充订单失败，请查看控制台了解详细错误信息",
     },
   );
 
   const cancelOrder = useAsyncFnWithToast(
     async (id: bigint) => {
-      await writeContractAsync({
-        ...contracts.Exchange.config,
-        functionName: "cancelOrder",
-        args: [id],
-      });
+      try {
+        logger.info({
+          message: "尝试取消订单",
+          data: {
+            orderId: id.toString(),
+          },
+        });
 
-      reload();
+        await writeContractAsync({
+          ...contracts.Exchange.config,
+          functionName: "cancelOrder",
+          args: [id],
+        });
+
+        logger.info({
+          message: "订单取消成功",
+          data: {
+            orderId: id.toString(),
+          },
+        });
+
+        reload();
+      } catch (error) {
+        logger.error({
+          message: "合约执行失败：取消订单时发生错误",
+          error,
+          data: {
+            orderId: id.toString(),
+          },
+        });
+        throw error; // 重新抛出错误，以便toast能够捕获并显示
+      }
     },
     {
-      success: "Order cancelled",
+      success: "订单已成功取消",
+      error: "取消订单失败，请查看控制台了解详细错误信息",
     },
   );
 
