@@ -68,10 +68,10 @@ USER nextjs
  
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/frontend/.next/standalone ./
-COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/frontend/.next/static ./apps/portfolio/frontend/.next/static
-COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/frontend/public ./apps/portfolio/frontend/public
+COPY --from=installer --chown=nextjs:nodejs /app/${PACKAGE_DIR}/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/${PACKAGE_DIR}/.next/static ./${PACKAGE_DIR}/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/${PACKAGE_DIR}/public ./${PACKAGE_DIR}/public
  
-COPY --chown=nextjs:nodejs docker/Next.js.entrypoint.sh /app/apps/portfolio/frontend/Next.js.entrypoint.sh
-RUN chmod +x /app/apps/portfolio/frontend/Next.js.entrypoint.sh
-CMD ["/app/apps/portfolio/frontend/Next.js.entrypoint.sh"]
+COPY --chown=nextjs:nodejs docker/Next.js.entrypoint.sh /app/${PACKAGE_DIR}/Next.js.entrypoint.sh
+RUN chmod +x /app/${PACKAGE_DIR}/Next.js.entrypoint.sh
+CMD ["/bin/sh", "-c", "/app/${PACKAGE_DIR}/Next.js.entrypoint.sh || (echo 'Application startup failed, keeping container running for debugging' && tail -f /dev/null)"]
