@@ -13,7 +13,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 # Replace <your-major-version> with the major version installed in your repository. For example:
 # RUN yarn global add turbo@^2
-RUN pnpm global add turbo@^2
+RUN pnpm i turbo@^2 -g
 COPY . .
  
 # Generate a partial monorepo with a pruned lockfile for a target workspace.
