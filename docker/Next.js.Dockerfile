@@ -69,6 +69,6 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/frontend/.next/s
 COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/frontend/.next/static ./apps/portfolio/frontend/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/frontend/public ./apps/portfolio/frontend/public
  
-COPY --chown=runner:app docker/Next.js.entrypoint.sh /app/portfolio/frontend/Next.js.entrypoint.sh
-RUN chmod +x /app/portfolio/frontend/Next.js.entrypoint.sh
-CMD ["/app/portfolio/frontend/Next.js.entrypoint.sh"]
+COPY --chown=nextjs:nodejs docker/Next.js.entrypoint.sh /app/apps/portfolio/frontend/Next.js.entrypoint.sh
+RUN chmod +x /app/apps/portfolio/frontend/Next.js.entrypoint.sh
+CMD ["/app/apps/portfolio/frontend/Next.js.entrypoint.sh"]
