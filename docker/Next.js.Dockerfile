@@ -78,5 +78,4 @@ RUN chmod +x /app/${PACKAGE_DIR}/Next.js.entrypoint.sh
 WORKDIR /app/${PACKAGE_DIR}
 
 EXPOSE 3000
-
-CMD ["./Next.js.entrypoint.sh || (echo 'Application startup failed, keeping container running for debugging' && tail -f /dev/null)"]
+ENTRYPOINT ["sh", "-c", "./Next.js.entrypoint.sh || (echo 'Application startup failed, keeping container running for debugging' && tail -f /dev/null)"]

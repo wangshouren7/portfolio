@@ -1,5 +1,5 @@
 const EXCHANGE_CONTRACT_CONFIG = {
-  address: "0x5E629b965A78ed6829c35e2DB3Dd2410042644dE",
+  address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
   abi: [
     {
       inputs: [
