@@ -1,5 +1,8 @@
 FROM node:18-alpine AS base
 
+ARG PACKAGE_NAME=@pfl-wsr/portfolio
+ARG PACKAGE_DIR=apps/portfolio/frontend
+
 # turbo
 ARG TURBO_TEAM
 ENV TURBO_TEAM=${TURBO_TEAM}
@@ -40,7 +43,7 @@ RUN turbo prune @pfl-wsr/portfolio --docker
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
 RUN apk update
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat python3 make g++
 WORKDIR /app
  
 # First install the dependencies (as they change less often)
