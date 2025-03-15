@@ -37,3 +37,14 @@ jobs:
           cache-to: type=gha,mode=max
           # 这个选项使构建完成后不会删除镜像，方便调试
           load: true
+
+      - name: 保存Docker镜像
+        run: |
+          docker save dapp-token-exchange-contracts:test -o image.tar
+          gzip image.tar
+
+      - name: 上传Docker镜像
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-image
+          path: image.tar.gz
