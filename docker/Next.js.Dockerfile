@@ -1,5 +1,18 @@
 FROM node:18-alpine AS base
 
+# turbo
+ARG TURBO_TEAM
+ENV TURBO_TEAM=${TURBO_TEAM}
+RUN echo "TURBO_TEAM: $TURBO_TEAM"
+
+ARG TURBO_TOKEN
+ENV TURBO_TOKEN=${TURBO_TOKEN}
+RUN echo "TURBO_TOKEN: $TURBO_TOKEN"
+
+ARG TURBO_CACHE
+ENV TURBO_CACHE=${TURBO_CACHE}
+RUN echo "TURBO_CACHE: $TURBO_CACHE"
+
 RUN corepack enable
 
 ########################################################

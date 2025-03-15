@@ -1,1 +1,1 @@
-export { default } from "@pfl-wsr/configs/postcss";
+export { default } from "@pfl-wsr/configs/prettier";

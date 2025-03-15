@@ -10,6 +10,11 @@ on:
   # 手动触发选项很适合测试阶段
   workflow_dispatch:
 
+env:
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_CACHE: "remote:rw"
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -58,3 +63,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            TURBO_TEAM=${{ vars.TURBO_TEAM }}
+            TURBO_TOKEN=${{ env.TURBO_TOKEN }}
+            TURBO_CACHE=${{ env.TURBO_CACHE }}
