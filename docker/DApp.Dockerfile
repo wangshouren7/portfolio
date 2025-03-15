@@ -42,6 +42,6 @@ RUN addgroup --system --gid 1001 app
 RUN adduser --system --uid 1001 runner
 USER runner
  
-COPY --chown=runner:app docker/Web3.entrypoint.sh /app/Web3.entrypoint.sh
-RUN chmod +x /app/Web3.entrypoint.sh
-CMD ["/app/Web3.entrypoint.sh"]
+COPY --chown=runner:app docker/DApp.entrypoint.sh /app/DApp.entrypoint.sh
+RUN chmod +x /app/DApp.entrypoint.sh
+CMD ["/app/DApp.entrypoint.sh"]

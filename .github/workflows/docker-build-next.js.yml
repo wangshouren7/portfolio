@@ -1,4 +1,4 @@
-name: Docker 构建与发布到 GHCR
+name: Docker 构建与发布 Next.js App 镜像 到 GHCR
 
 on:
   push:

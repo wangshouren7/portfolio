@@ -1,4 +1,4 @@
-name: Docker 构建与发布到 GHCR
+name: Docker 构建与发布 DApp 镜像到 GHCR
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
     paths:
       - "apps/dapp-token-exchange/contracts/**"
       - "docker/**"
-      - ".github/workflows/docker-build-web3.yml"
+      - ".github/workflows/docker-build-dapp.yml"
   # 手动触发选项很适合测试阶段
   workflow_dispatch:
 
@@ -51,7 +51,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./docker/Web3.Dockerfile
+          file: ./docker/DApp.Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
