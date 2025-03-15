@@ -13,7 +13,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY . .
 
-RUN turbo prune @pfl-wsr/dapp-token-exchange-contracts @pfl-wsr/dapp-token-exchange-frontend --docker
+RUN turbo prune @pfl-wsr/portfolio --docker
 
 FROM base AS runner
 WORKDIR /app
@@ -24,7 +24,7 @@ RUN pnpm install --frozen-lockfile
  
 # Copy full code to build
 COPY --from=builder /app/out/full/ .
-RUN pnpm turbo compile build
+RUN pnpm turbo  build
 
 # 创建目标目录
 RUN mkdir -p /app/standalone/.next
