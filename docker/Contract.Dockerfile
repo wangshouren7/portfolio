@@ -27,12 +27,12 @@ COPY --from=builder /app/out/full/ .
 RUN pnpm turbo compile build
 
 # Copy the frontend built files (standalone)
-COPY ./apps/dapp-token-exchange/frontend/.next/standalone/apps/dapp-token-exchange/frontend ./standalone
-COPY ./apps/dapp-token-exchange/frontend/.next/static ./standalone/.next/static
-COPY ./apps/dapp-token-exchange/frontend/public ./standalone/public
+COPY /app/apps/dapp-token-exchange/frontend/.next/standalone/apps/dapp-token-exchange/frontend ./standalone
+COPY /app/apps/dapp-token-exchange/frontend/.next/static ./standalone/.next/static
+COPY /app/apps/dapp-token-exchange/frontend/public ./standalone/public
 
 # Remove frontend package (standalone)
-RUN rm -rf ./apps/dapp-token-exchange/frontend
+RUN rm -rf /app/apps/dapp-token-exchange/frontend
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 app
