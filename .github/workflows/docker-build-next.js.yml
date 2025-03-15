@@ -4,9 +4,9 @@ on:
   push:
     branches: [main]
     paths:
-      - "apps/dapp-token-exchange/contracts/**"
+      - "apps/portfolio/**"
       - "docker/**"
-      - ".github/workflows/docker-build-test.yml"
+      - ".github/workflows/docker-build-next.js.yml"
   # 手动触发选项很适合测试阶段
   workflow_dispatch:
 
@@ -21,6 +21,10 @@ jobs:
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
+
+      # 添加 QEMU 用于多架构支持
+      - name: 设置 QEMU
+        uses: docker/setup-qemu-action@v3
 
       - name: 设置 Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -44,15 +48,13 @@ jobs:
             type=ref,event=tag
 
       - name: 构建并推送 Docker 镜像
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./docker/Next.js.Dockerfile
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          # build-args: |
-          # PACKAGE_NAME=@pfl-wsr/dapp-token-exchange-contracts
-          # 使用缓存加速构建
           cache-from: type=gha
           cache-to: type=gha,mode=max
