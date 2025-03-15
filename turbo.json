@@ -20,6 +20,14 @@
       "dependsOn": ["^compile"],
       "inputs": ["src/**"],
       "outputs": [".next/**"]
+    },
+    "compile:watch": {
+      "persistent": true,
+      "cache": false
+    },
+    "test": {
+      "inputs": ["src/**/*", "app/**/*", "tests/**/*", "test/**/*"],
+      "dependsOn": ["compile"]
     }
   }
 }

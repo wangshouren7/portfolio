@@ -52,10 +52,10 @@ USER nextjs
  
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/.next/standalone ./
-COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/.next/static ./apps/portfolio/.next/static
-COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/public ./apps/portfolio/public
+COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/frontend/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/frontend/.next/static ./apps/portfolio/frontend/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/frontend/public ./apps/portfolio/frontend/public
  
-COPY --chown=runner:app docker/Next.js.entrypoint.sh /app/Next.js.entrypoint.sh
-RUN chmod +x /app/Next.js.entrypoint.sh
-CMD ["/app/Next.js.entrypoint.sh"]
+COPY --chown=runner:app docker/Next.js.entrypoint.sh /app/portfolio/frontend/Next.js.entrypoint.sh
+RUN chmod +x /app/portfolio/frontend/Next.js.entrypoint.sh
+CMD ["/app/portfolio/frontend/Next.js.entrypoint.sh"]

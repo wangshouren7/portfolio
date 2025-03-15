@@ -11,13 +11,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "storybook": "storybook dev -p 6006",
-    "build:storybook": "storybook build",
     "lint": "eslint .",
-    "test:e2e": "playwright test",
-    "test": "vitest --run",
-    "test:watch": "vitest watch",
-    "test:changed": "vitest run --changed",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
@@ -27,6 +21,7 @@
     "@pfl-wsr/log": "workspace:^",
     "@pfl-wsr/ui": "workspace:^",
     "@rainbow-me/rainbowkit": "^2.2.4",
+    "@t3-oss/env-nextjs": "^0.11.0",
     "@tanstack/react-query": "^5.67.1",
     "@types/lodash-es": "^4.17.12",
     "dayjs": "^1.11.13",
@@ -43,10 +38,7 @@
   },
   "devDependencies": {
     "@pfl-wsr/configs": "workspace:*",
-    "@playwright/test": "^1.45.2",
     "@tailwindcss/postcss": "^4.0.9",
-    "@testing-library/jest-dom": "^6.4.6",
-    "@testing-library/react": "^16.0.0",
     "@types/node": "*",
     "@types/react": "19.0.8",
     "@types/react-dom": "19.0.3",
@@ -54,7 +46,6 @@
     "postcss": "^8.5.3",
     "rimraf": "^6.0.1",
     "tailwindcss": "^4.0.9",
-    "typescript": "5.8.2",
-    "vitest": "^2.0.4"
+    "typescript": "5.8.2"
   }
 }

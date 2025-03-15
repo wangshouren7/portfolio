@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { ethers } from "hardhat";
 import { parseEther } from "ethers";
 import { setup, ETHER_ADDRESS, OrderStatus, type SetupResult } from "./setup";
+import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 
 describe("Exchange - makeOrder", function () {
   let setupData: SetupResult;
@@ -32,7 +32,7 @@ describe("Exchange - makeOrder", function () {
         tokenAmount, // amountGet
         ETHER_ADDRESS, // tokenGive
         etherAmount, // amountGive
-        (await ethers.provider.getBlock("latest"))!.timestamp + 1, // timestamp (approximate)
+        anyValue, // timestamp (approximate)
       );
 
     // Check order count

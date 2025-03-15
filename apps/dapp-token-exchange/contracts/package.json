@@ -8,12 +8,13 @@
   "license": "ISC",
   "scripts": {
     "deploy:localhost": "npx hardhat ignition deploy ./ignition/modules/Token.ts --network localhost && npx hardhat ignition deploy ./ignition/modules/Exchange.ts --network localhost",
-    "test:localhost": "npx hardhat test --network localhost",
+    "deploy:sepolia": "npx hardhat ignition deploy ./ignition/modules/Token.ts --network sepolia && npx hardhat ignition deploy ./ignition/modules/Exchange.ts --network sepolia",
     "generate-contract-config": "npx hardhat run ./scripts/generate-contract-config.ts --network localhost",
     "seed:localhost": "npx hardhat run ./scripts/seed.ts --network localhost",
     "compile": "npx hardhat compile",
     "check-types": "tsc --noEmit",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "npx hardhat test"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",

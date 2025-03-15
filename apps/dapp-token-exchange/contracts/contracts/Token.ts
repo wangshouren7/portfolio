@@ -1,5 +1,5 @@
 const TOKEN_CONTRACT_CONFIG = {
-  address: "0x09635F643e140090A9A8Dcd712eD6285858ceBef",
+  address: "0x5118e383aB1adB1CF4C0ce7a187D3014e4eE8A32",
   abi: [
     {
       inputs: [],

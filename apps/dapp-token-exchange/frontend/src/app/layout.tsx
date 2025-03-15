@@ -20,7 +20,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className)}>
+      <body className={cn(inter.className, "dark")}>
         <Providers>
           <div className="flex h-screen flex-col">
             <Header />

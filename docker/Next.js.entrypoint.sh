@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-node apps/portfolio/server.js
+node server.js
 
 # The purpose of the `tail -f /dev/null` command is to keep the container running without exiting.
 # It achieves this by continuously monitoring the /dev/null file (a special device file that never contains content).

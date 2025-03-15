@@ -35,10 +35,9 @@ const PriceChart: React.FC<IComponentBaseProps> = (props) => {
   useEffect(() => {
     const chart = createChart(ref.current!, {
       layout: {
-        textColor: "black",
-        background: { type: ColorType.Solid, color: "white" },
+        textColor: "white",
+        background: { type: ColorType.Solid, color: "black" },
       },
-
       timeScale: {
         timeVisible: true,
         secondsVisible: false,
