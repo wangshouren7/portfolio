@@ -1,47 +1,95 @@
 FROM node:18-alpine AS base
 
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-
-RUN corepack enable
-
-RUN apk update && apk add --no-cache libc6-compat
-
-RUN pnpm install turbo@^2 -g
-
-FROM base AS builder
+########################################################
+# builder-contracts: use `turbo prune` to prune contracts files
+########################################################
+ 
+FROM base AS builder-contracts
+RUN apk update
+RUN apk add --no-cache libc6-compat
+# Set working directory
 WORKDIR /app
+# Replace <your-major-version> with the major version installed in your repository. For example:
+# RUN yarn global add turbo@^2
+RUN pnpm global add turbo@^2
 COPY . .
-RUN turbo prune @pfl-wsr/dapp-token-exchange-contracts @pfl-wsr/dapp-token-exchange-frontend --docker
+
+# Generate a partial monorepo with a pruned lockfile for a target workspace.
+# Assuming "web" is the name entered in the project's package.json: { name: "web" }
+RUN turbo prune @pfl-wsr/dapp-token-exchange-contracts --docker
+
+########################################################
+# installer-contracts: install and compile the contracts
+########################################################
+
+# Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer-contracts
+RUN apk update
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+ 
+# First install the dependencies (as they change less often)
+COPY --from=builder-contracts /app/out/json/ .
+RUN pnpm install --frozen-lockfile
+ 
+# Build the project
+COPY --from=builder-contracts /app/out/full/ .
+RUN pnpm turbo run compile
+
+########################################################
+# builder-frontend: use `turbo prune` to prune frontend files
+########################################################
+ 
+FROM base AS builder-frontend
+RUN apk update
+RUN apk add --no-cache libc6-compat
+# Set working directory
+WORKDIR /app
+# Replace <your-major-version> with the major version installed in your repository. For example:
+# RUN yarn global add turbo@^2
+RUN pnpm global add turbo@^2
+COPY . .
+
+# Generate a partial monorepo with a pruned lockfile for a target workspace.
+# Assuming "web" is the name entered in the project's package.json: { name: "web" }
+RUN turbo prune @pfl-wsr/dapp-token-exchange-frontend --docker
+
+########################################################
+# installer-frontend: install and build the frontend
+########################################################
+
+# Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer-frontend
+RUN apk update
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+ 
+# First install the dependencies (as they change less often)
+COPY --from=builder-frontend /app/out/json/ .
+RUN pnpm install --frozen-lockfile
+ 
+# Build the project
+COPY --from=builder-frontend /app/out/full/ .
+RUN pnpm turbo run build
+
+########################################################
+# runner: copy the build output and run the app
+########################################################
 
 FROM base AS runner
 WORKDIR /app
-RUN apk update && apk add --no-cache python3 make g++
-
-# First install the dependencies (as they change less often)
-COPY --from=builder /app/out/json/ .
-RUN pnpm install --frozen-lockfile
  
-# Copy full code to build
-COPY --from=builder /app/out/full/ .
-RUN pnpm turbo compile build
-
-# 创建目标目录
-RUN mkdir -p /app/standalone/.next
-
-# 复制前端构建文件（standalone模式）
-RUN cp -r /app/apps/dapp-token-exchange/frontend/.next/standalone/apps/dapp-token-exchange/frontend /app/standalone
-RUN cp -r /app/apps/dapp-token-exchange/frontend/.next/static /app/standalone/.next/
-RUN cp -r /app/apps/dapp-token-exchange/frontend/public /app/standalone/
-
-# Remove frontend package (standalone)
-RUN rm -rf /app/apps/dapp-token-exchange/frontend
-
 # Don't run production as root
-RUN addgroup --system --gid 1001 app
-RUN adduser --system --uid 1001 runner
-USER runner
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+USER nextjs
  
-COPY --chown=runner:app docker/DApp.entrypoint.sh /app/DApp.entrypoint.sh
-RUN chmod +x /app/DApp.entrypoint.sh
-CMD ["/app/DApp.entrypoint.sh"]
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/.next/static ./apps/portfolio/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/public ./apps/portfolio/public
+ 
+COPY --chown=runner:app docker/Next.js.entrypoint.sh /app/Next.js.entrypoint.sh
+RUN chmod +x /app/Next.js.entrypoint.sh
+CMD ["/app/Next.js.entrypoint.sh"]

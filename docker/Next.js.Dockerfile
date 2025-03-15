@@ -1,56 +1,59 @@
 FROM node:18-alpine AS base
 
-ARG APP_DIR = apps/portfolio
-RUN echo "APP_DIR: $APP_DIR"
-
-ARG APP_PACKAGE_NAME = @pfl-wsr/portfolio
-RUN echo "APP_PACKAGE_NAME: $APP_PACKAGE_NAME"
-
-# turbo
-ARG TURBO_TEAM
-ENV TURBO_TEAM=${TURBO_TEAM}
-RUN echo "TURBO_TEAM: $TURBO_TEAM"
-ARG TURBO_TOKEN
-ENV TURBO_TOKEN=${TURBO_TOKEN}
-RUN echo "TURBO_TOKEN: $TURBO_TOKEN"
-
-RUN apk update && apk add --no-cache libc6-compat
-
-RUN corepack enable
-
-# 构建阶段，安装所有必要的构建工具
+########################################################
+# builder: use `turbo prune` to prune app files
+########################################################
+ 
 FROM base AS builder
+RUN apk update
+RUN apk add --no-cache libc6-compat
+# Set working directory
 WORKDIR /app
+# Replace <your-major-version> with the major version installed in your repository. For example:
+# RUN yarn global add turbo@^2
+RUN pnpm global add turbo@^2
 COPY . .
-RUN pnpx turbo@^2 prune ${APP_PACKAGE_NAME} --docker
+ 
+# Generate a partial monorepo with a pruned lockfile for a target workspace.
+# Assuming "web" is the name entered in the project's package.json: { name: "web" }
+RUN turbo prune @pfl-wsr/portfolio --docker
 
-# 安装依赖阶段
+########################################################
+# installer: install and build the app
+########################################################
+
+# Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
-RUN apk update && apk add --no-cache python3 make g++
+RUN apk update
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY .gitignore .gitignore
+ 
+# First install the dependencies (as they change less often)
 COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN pnpm i --frozen-lockfile --ignore-scripts
-
-# 构建项目
+RUN pnpm install --frozen-lockfile
+ 
+# Build the project
 COPY --from=builder /app/out/full/ .
-# 触发 postinstall hook
-RUN pnpm i --frozen-lockfile
-COPY turbo.json turbo.json
-RUN pnpm turbo build --filter=${APP_PACKAGE_NAME}...
+RUN pnpm turbo run build
 
-# 最终的运行阶段，只包含必要的运行时依赖
+########################################################
+# runner: copy the build output and run the app
+########################################################
+
 FROM base AS runner
 WORKDIR /app
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs
+ 
+# Don't run production as root
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 USER nextjs
-COPY --from=installer /app/${APP_DIR}/package.json .
-COPY --from=installer --chown=nextjs:nodejs /app/${APP_DIR}/.next/standalone ./
-COPY --from=installer --chown=nextjs:nodejs /app/${APP_DIR}/.next/static ./${APP_DIR}/.next/static
-COPY --from=installer --chown=nextjs:nodejs /app/${APP_DIR}/public ./${APP_DIR}/public
-
-WORKDIR /app/${APP_DIR}
-
+ 
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/.next/static ./apps/portfolio/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/portfolio/public ./apps/portfolio/public
+ 
+COPY --chown=runner:app docker/Next.js.entrypoint.sh /app/Next.js.entrypoint.sh
+RUN chmod +x /app/Next.js.entrypoint.sh
 CMD ["/app/Next.js.entrypoint.sh"]
