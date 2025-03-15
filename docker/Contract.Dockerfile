@@ -2,8 +2,6 @@ FROM node:18-alpine AS base
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
-
 
 RUN corepack enable
 
@@ -15,58 +13,32 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY . .
 
-################### contract ###################
+RUN turbo prune @pfl-wsr/dapp-token-exchange-contracts @pfl-wsr/dapp-token-exchange-frontend --docker
 
-FROM builder AS contract-builder
-
-RUN turbo prune @pfl-wsr/dapp-token-exchange-contracts --docker
-
-# 添加新的构建阶段，避免循环依赖
-FROM base AS contract-runner
+FROM base AS runner
 WORKDIR /app
 
 # First install the dependencies (as they change less often)
-COPY --from=contract-builder /app/out/json/ .
+COPY --from=builder /app/out/json/ .
 RUN pnpm install --frozen-lockfile
  
-# Compile the contract
-COPY --from=contract-builder /app/out/full/ .
-RUN pnpm turbo compile
+# Copy full code to build
+COPY --from=builder /app/out/full/ .
+RUN pnpm turbo compile build
 
+# Copy the frontend built files (standalone)
+COPY ./apps/dapp-token-exchange/frontend/.next/standalone/apps/dapp-token-exchange/frontend ./standalone
+COPY ./apps/dapp-token-exchange/frontend/.next/static ./standalone/.next/static
+COPY ./apps/dapp-token-exchange/frontend/public ./standalone/public
 
-################### frontend ###################
-
-FROM builder AS frontend-builder
-
-RUN turbo prune @pfl-wsr/dapp-token-exchange-frontend --docker
-
-FROM base AS frontend-runner
-WORKDIR /app
-
-# First install the dependencies (as they change less often)
-COPY --from=frontend-builder /app/out/json/ .
-RUN pnpm install --frozen-lockfile
-
-# Build the frontend
-COPY --from=frontend-builder /app/out/full/ .
-RUN pnpm turbo build
-
-
-################### merge ###################
-
-# Copy the frontend built files to the contract runner
-FROM contract-runner AS runner
-COPY --from=frontend-runner /app/apps/dapp-token-exchange/frontend/.next/standalone/apps/dapp-token-exchange/frontend ./standalone
-COPY --from=frontend-runner /app/apps/dapp-token-exchange/frontend/.next/static ./standalone/.next/static
-COPY --from=frontend-runner /app/apps/dapp-token-exchange/frontend/public ./standalone/public
-
-
+# Remove frontend package (standalone)
+RUN rm -rf ./apps/dapp-token-exchange/frontend
 
 # Don't run production as root
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 app
-USER app
+RUN addgroup --system --gid 1001 app
+RUN adduser --system --uid 1001 runner
+USER runner
  
-COPY --chown=app:nodejs docker/Contract.entrypoint.sh /app/Contract.entrypoint.sh
+COPY --chown=runner:app docker/Contract.entrypoint.sh /app/Contract.entrypoint.sh
 RUN chmod +x /app/Contract.entrypoint.sh
 CMD ["/app/Contract.entrypoint.sh"]

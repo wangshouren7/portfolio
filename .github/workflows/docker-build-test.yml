@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: 设置 Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -32,16 +34,30 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # 添加一步来显示登录状态
+      - name: 验证登录状态
+        run: |
+          echo "当前用户: ${{ github.actor }}"
+          echo "仓库: ${{ github.repository }}"
+          echo "尝试查询 GHCR 信息..."
+          docker info
+
       - name: 提取元数据（标签、标签等）
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/dapp-token-exchange
+          images: ghcr.io/${{ github.repository_owner }}/dapp-token-exchange-contracts
           tags: |
             type=raw,value=latest
             type=sha,format=short
             type=ref,event=branch
             type=ref,event=tag
+
+      # 显示将要使用的标签
+      - name: 显示标签信息
+        run: |
+          echo "将使用以下标签:"
+          echo "${{ steps.meta.outputs.tags }}"
 
       - name: 构建并推送 Docker 镜像
         uses: docker/build-push-action@v5
@@ -51,8 +67,15 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          # build-args: |
-          # PACKAGE_NAME=@pfl-wsr/dapp-token-exchange-contracts
+          build-args: |
+            PACKAGE_NAME=@pfl-wsr/dapp-token-exchange-contracts
           # 使用缓存加速构建
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # 添加一步来确认推送结果
+      - name: 验证推送结果
+        run: |
+          echo "镜像推送完成"
+          echo "请在 https://github.com/${{ github.repository_owner }}?tab=packages 检查"
+          echo "或在仓库的 Packages 标签页查看"
