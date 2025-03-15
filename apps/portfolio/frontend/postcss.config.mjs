@@ -1,5 +1,5 @@
-const config = {
-  plugins: ["@tailwindcss/postcss"],
-};
+import config from "@pfl-wsr/configs/prettier";
 
-export default config;
+export default {
+  ...config,
+};
