@@ -79,4 +79,4 @@ WORKDIR /app/${PACKAGE_DIR}
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "Next.js.entrypoint.sh || (echo 'Application startup failed, keeping container running for debugging' && tail -f /dev/null)"]
+CMD ["./Next.js.entrypoint.sh || (echo 'Application startup failed, keeping container running for debugging' && tail -f /dev/null)"]

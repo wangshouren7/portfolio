@@ -7,21 +7,22 @@ import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 
 import { config } from "../wagmi";
 import { Toaster, TooltipProvider } from "@pfl-wsr/ui";
+import { logger } from "@/lib/logger";
 
 const queryClient = new QueryClient({
-  // defaultOptions: {
-  //   queries: {
-  //     throwOnError: (error) => {
-  //       logger.error("queryClient throwOnError ===========begin");
-  //       logger.error("error.name", error.name);
-  //       logger.error("error.cause", error.cause);
-  //       logger.error("error.message", error.message);
-  //       logger.error("error.stack", error.stack);
-  //       logger.error("queryClient throwOnError ===========end");
-  //       return false;
-  //     },
-  //   },
-  // },
+  defaultOptions: {
+    queries: {
+      throwOnError: (error) => {
+        logger.error("queryClient throwOnError ===========begin");
+        logger.error("error.name", error.name);
+        logger.error("error.cause", error.cause);
+        logger.error("error.message", error.message);
+        logger.error("error.stack", error.stack);
+        logger.error("queryClient throwOnError ===========end");
+        return false;
+      },
+    },
+  },
 });
 
 export function Providers({ children }: { children: React.ReactNode }) {

@@ -74,6 +74,8 @@ export const useOrders = () => {
 
   const fillOrder = useAsyncFnWithToast(
     async (order: IDecoratedOrder) => {
+      logger.withTag("fillOrder").info(order);
+
       await writeContractAsync({
         ...contracts.Exchange.config,
         functionName: "fillOrder",
