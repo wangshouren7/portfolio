@@ -76,4 +76,7 @@ COPY --chown=nextjs:nodejs docker/Next.js.entrypoint.sh /app/${PACKAGE_DIR}/Next
 RUN chmod +x /app/${PACKAGE_DIR}/Next.js.entrypoint.sh
 
 WORKDIR /app/${PACKAGE_DIR}
-CMD ["/bin/sh", "-c", "Next.js.entrypoint.sh || (echo 'Application startup failed, keeping container running for debugging' && tail -f /dev/null)"]
+
+EXPOSE 3000
+
+CMD ["sh", "-c", "Next.js.entrypoint.sh || (echo 'Application startup failed, keeping container running for debugging' && tail -f /dev/null)"]
