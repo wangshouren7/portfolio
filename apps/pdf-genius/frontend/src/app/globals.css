@@ -1,0 +1,231 @@
+/* Import external UI styles package */
+@import "@pfl-wsr/ui/styles.css";
+@source "../../node_modules/@pfl-wsr/ui";
+
+/* Import Tailwind CSS framework and animation plugin */
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+/* Create a custom variant for dark mode elements */
+@custom-variant dark (&:is(.dark *));
+
+/* Define a custom property for border animation */
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* Theme variables - this section defines all color values */
+/* These CSS variables control the color scheme of the website */
+@layer base {
+  :root {
+    /* Light mode colors */
+    --background: 0 0% 100%; /* White background */
+    --foreground: 222.2 84% 4.9%; /* Dark text color */
+    --card: 0 0% 100%; /* White card background */
+    --card-foreground: 222.2 84% 4.9%; /* Dark text on cards */
+    --popover: 0 0% 100%; /* White popover background */
+    --popover-foreground: 222.2 84% 4.9%; /* Dark text on popovers */
+    --primary: 350 89% 60%; /* Main pink/rose color */
+    --primary-foreground: 210 40% 98%; /* Light text on primary color */
+    --secondary: 350 33% 96%; /* Light pink secondary color */
+    --secondary-foreground: 350 89% 60%; /* Pink text on secondary background */
+    --muted: 350 33% 96%; /* Soft pink for muted elements */
+    --muted-foreground: 215 25% 27%; /* Darker text for muted areas */
+    --accent: 350 33% 18%; /* Dark accent color */
+    --accent-foreground: 350 89% 60%; /* Pink text on accent background */
+    --destructive: 350 89% 50%; /* Bright pink for warnings/errors */
+    --destructive-foreground: 210 40% 98%; /* Light text on destructive elements */
+    --border: 350 33% 90%; /* Light pink border color */
+    --input: 350 33% 90%; /* Light pink input background */
+    --ring: 350 89% 60%; /* Pink focus ring color */
+    --radius: 0.5rem; /* Default border radius */
+    /* Chart colors for data visualization */
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    /* Dark mode colors */
+    --background: 222.2 84% 4.9%; /* Dark background (almost black) */
+    --foreground: 210 40% 98%; /* Light text color */
+    --card: 222.2 84% 4.9%; /* Dark card background */
+    --card-foreground: 210 40% 98%; /* Light text on cards */
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 350 89% 60%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 350 33% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 350 33% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 350 33% 25%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 350 89% 40%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 350 33% 17.5%;
+    --input: 350 33% 17.5%;
+    --ring: 350 89% 60%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@theme {
+  /* Font settings - defines the main font stack for the site */
+  --font-sans:
+    var(--font-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  /* Convert HSL variables to actual color values that can be used in the site */
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  /* Border radius settings for different sizes */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* Animation for rotating border effect */
+  --animate-rotate-border: border-rotate 4s linear infinite;
+
+  /* Keyframe animation that changes the border angle */
+  @keyframes border-rotate {
+    to {
+      --border-angle: 360deg;
+    }
+  }
+}
+
+/* Compatibility styles for Tailwind CSS v4 */
+/* These ensure borders look the same as they did in v3 */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+/* Utility classes that can be applied throughout the site */
+@layer utilities {
+  body {
+    font-family:
+      Arial, Helvetica, sans-serif; /* Default font for the whole site */
+  }
+}
+
+/* Base styles that apply to HTML elements */
+@layer base {
+  * {
+    @apply border-border; /* Apply border colors to all elements */
+  }
+  /* Typography styles for headings */
+  h1 {
+    @apply text-4xl font-bold md:text-6xl xl:text-7xl; /* Largest heading, responsive size */
+  }
+
+  h2 {
+    @apply text-xl font-medium lg:text-3xl; /* Second level heading */
+  }
+
+  h3 {
+    @apply text-2xl font-medium lg:text-4xl; /* Third level heading */
+  }
+
+  /* Link and button styles */
+  a {
+    @apply hover:cursor-pointer; /* Show pointer cursor on links */
+  }
+
+  button {
+    @apply bg-rose-600 hover:cursor-pointer hover:bg-rose-700; /* Rose colored buttons that darken on hover */
+  }
+
+  /* Animation for gradient background that moves horizontally */
+  @keyframes gradient-x {
+    0%,
+    100% {
+      background-size: 200% 100%;
+      background-position: left center;
+    }
+    50% {
+      background-size: 200% 100%;
+      background-position: right center;
+    }
+  }
+
+  .animate-gradient-x {
+    animation: gradient-x 3s ease infinite; /* Apply the gradient animation */
+  }
+}
+
+/* Container utility for responsive layout */
+@utility container {
+  margin-inline: auto; /* Center container horizontally */
+  padding-inline: 2rem; /* Add padding on both sides */
+  /* Responsive width adjustments */
+  @media (width >= --theme(--breakpoint-sm)) {
+    max-width: none;
+  }
+  @media (width >= 1400px) {
+    max-width: 1400px; /* Limit width on very large screens */
+  }
+}
+
+/* Repeated gradient animation (same as above) */
+@keyframes gradient-x {
+  0%,
+  100% {
+    background-size: 200% 100%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 100%;
+    background-position: right center;
+  }
+}
+
+.animate-gradient-x {
+  animation: gradient-x 3s ease infinite;
+}

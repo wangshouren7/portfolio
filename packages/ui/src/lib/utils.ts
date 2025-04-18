@@ -13,12 +13,16 @@ export function cn(...inputs: ClassValue[]) {
  * @param jsx
  * @returns
  */
-export function mp(props: any, jsx: React.ReactElement) {
+export function mp(props: any = {}, jsx: React.ReactElement) {
   if (!React.isValidElement(jsx)) {
     return jsx;
   }
 
   if (React.Fragment === jsx.type) {
+    return jsx;
+  }
+
+  if (!props?.className && !props?.style) {
     return jsx;
   }
 

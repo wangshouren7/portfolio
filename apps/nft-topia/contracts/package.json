@@ -1,0 +1,50 @@
+{
+  "name": "@pfl-wsr/nft-topia-contracts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./index.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "deploy:localhost": "npx hardhat ignition deploy ./ignition/modules/NFTMarketPlace.ts --network localhost",
+    "deploy:sepolia": "npx hardhat ignition deploy ./ignition/modules/NFTMarketPlace.ts --network sepolia",
+    "generate-index": "npx hardhat run ./scripts/generate-index.ts",
+    "compile": "npx hardhat compile",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "npx hardhat test"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
+    "@nomicfoundation/hardhat-ignition": "^0.15.0",
+    "@nomicfoundation/hardhat-ignition-ethers": "^0.15.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.13",
+    "@nomiclabs/hardhat-ganache": "^2.0.1",
+    "@typechain/hardhat": "^9.0.0",
+    "@types/chai": "^4.2.0",
+    "@types/lodash": "^4.17.16",
+    "@types/mocha": ">=9.1.0",
+    "@types/node": "*",
+    "chai": "^4.2.0",
+    "ethers": "^6.4.0",
+    "hardhat": "^2.22.19",
+    "hardhat-gas-reporter": "^1.0.8",
+    "solidity-coverage": "^0.8.0",
+    "ts-node": ">=8.0.0",
+    "typechain": "^8.3.0",
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^9.7.0",
+    "@openzeppelin/contracts": "^5.2.0",
+    "change-case": "^5.4.4",
+    "fast-glob": "^3.3.2",
+    "lodash": "^4.17.21",
+    "pinata": "^2.2.0",
+    "tsx": "^4.19.3"
+  }
+}

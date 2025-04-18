@@ -11,7 +11,7 @@
     "deploy:sepolia": "npx hardhat ignition deploy ./ignition/modules/Token.ts --network sepolia && npx hardhat ignition deploy ./ignition/modules/Exchange.ts --network sepolia",
     "generate-index": "npx hardhat run ./scripts/generate-index.ts",
     "seed:localhost": "npx hardhat run ./scripts/seed.ts --network localhost",
-    "compile": "npx hardhat compile && pnpm generate-index",
+    "compile": "npx hardhat compile",
     "check-types": "tsc --noEmit",
     "lint": "eslint .",
     "test": "npx hardhat test"

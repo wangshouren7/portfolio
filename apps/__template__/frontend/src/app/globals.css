@@ -1,0 +1,13 @@
+@import "@pfl-wsr/ui/styles.css";
+@source "../../node_modules/@pfl-wsr/ui";
+
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+}
+
+@layer components {
+}

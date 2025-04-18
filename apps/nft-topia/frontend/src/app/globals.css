@@ -1,0 +1,18 @@
+@import "@rainbow-me/rainbowkit/styles.css";
+
+@import "@pfl-wsr/ui/styles.css";
+@source "../../node_modules/@pfl-wsr/ui";
+@source "../../.storybook"
+
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@plugin "tailwindcss-animate";
+
+@plugin "daisyui" {
+  themes:
+    light --default,
+    dark --prefersdark;
+}
+
+@layer components {
+}

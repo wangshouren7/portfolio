@@ -16,6 +16,6 @@ export interface IPageProps<
   TParams = Record<string, string>,
   TSearchParams = Record<string, string>,
 > {
-  params: TParams;
-  searchParams: TSearchParams;
+  params: Promise<TParams>;
+  searchParams: Promise<TSearchParams>;
 }
