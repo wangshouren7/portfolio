@@ -9,19 +9,19 @@ import {
   useWriteContract,
 } from "wagmi";
 import { decorateOrder, type IDecoratedOrder } from "./decorate-order";
-import { contracts } from "@/contracts";
 import { useTransactionFnWithToast } from "@/lib/use-async-fn-with-toast";
-import { useContractConfig } from "@/contract-config";
+import { useContractsConfigOfCurrentChain } from "../contracts/use-contract-configs";
+import { EOrderStatus, EOrderType } from "../contracts/types";
 
 export const useOrders = () => {
-  const contractConfig = useContractConfig();
+  const contractConfig = useContractsConfigOfCurrentChain();
   const queryClient = useQueryClient();
   const { address: account } = useAccount();
 
   const { writeContractAsync } = useWriteContract();
 
   useWatchContractEvent({
-    ...contractConfig.exchange,
+    ...contractConfig.Exchange,
     eventName: "Order",
     onLogs: () => {
       reload();
@@ -29,28 +29,28 @@ export const useOrders = () => {
   });
 
   const { data: orders, queryKey } = useReadContract({
-    ...contractConfig.exchange,
+    ...contractConfig.Exchange,
     functionName: "getOrders",
     query: {
       select: (data) => {
         const orders = data.map(decorateOrder);
 
         const ret = {
-          [contracts.Exchange.EOrderStatus.PENDING]: {
-            [contracts.Exchange.EOrderType.BUY]: [] as IDecoratedOrder[],
-            [contracts.Exchange.EOrderType.SELL]: [] as IDecoratedOrder[],
+          [EOrderStatus.PENDING]: {
+            [EOrderType.BUY]: [] as IDecoratedOrder[],
+            [EOrderType.SELL]: [] as IDecoratedOrder[],
             my: [] as IDecoratedOrder[],
             all: [] as IDecoratedOrder[],
           },
-          [contracts.Exchange.EOrderStatus.FILLED]: {
-            [contracts.Exchange.EOrderType.BUY]: [] as IDecoratedOrder[],
-            [contracts.Exchange.EOrderType.SELL]: [] as IDecoratedOrder[],
+          [EOrderStatus.FILLED]: {
+            [EOrderType.BUY]: [] as IDecoratedOrder[],
+            [EOrderType.SELL]: [] as IDecoratedOrder[],
             my: [] as IDecoratedOrder[],
             all: [] as IDecoratedOrder[],
           },
-          [contracts.Exchange.EOrderStatus.CANCELLED]: {
-            [contracts.Exchange.EOrderType.BUY]: [] as IDecoratedOrder[],
-            [contracts.Exchange.EOrderType.SELL]: [] as IDecoratedOrder[],
+          [EOrderStatus.CANCELLED]: {
+            [EOrderType.BUY]: [] as IDecoratedOrder[],
+            [EOrderType.SELL]: [] as IDecoratedOrder[],
             my: [] as IDecoratedOrder[],
             all: [] as IDecoratedOrder[],
           },
@@ -76,7 +76,7 @@ export const useOrders = () => {
   const fillOrder = useTransactionFnWithToast(
     async (order: IDecoratedOrder) => {
       const tx = await writeContractAsync({
-        ...contractConfig.exchange,
+        ...contractConfig.Exchange,
         functionName: "fillOrder",
         args: [order.id],
       });
@@ -89,7 +89,7 @@ export const useOrders = () => {
 
   const cancelOrder = useTransactionFnWithToast(async (id: bigint) => {
     const tx = await writeContractAsync({
-      ...contractConfig.exchange,
+      ...contractConfig.Exchange,
       functionName: "cancelOrder",
       args: [id],
     });

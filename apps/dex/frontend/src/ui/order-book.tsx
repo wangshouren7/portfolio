@@ -16,28 +16,22 @@ import {
 import React from "react";
 import { useAccount } from "wagmi";
 import { useOrders } from "@/domains/order/use-orders";
-import { contracts } from "@/contracts";
 import { PanelCard } from "./panel-card";
 import { throttle } from "lodash-es";
 import { AsyncButton } from "./async-button";
 import { useBalanceUI } from "@/domains/balance/use-balance-ui";
-import { useContractConfig } from "@/contract-config";
+import { EOrderStatus, EOrderType } from "@/domains/contracts/types";
+import { useContractsConfigOfCurrentChain } from "@/domains/contracts/use-contract-configs";
 
 /** TODO sort filters */
 export const OrderBook: React.FC<IComponentBaseProps> = (props) => {
-  const contractConfig = useContractConfig();
+  const contractConfig = useContractsConfigOfCurrentChain();
   const { address: account } = useAccount();
   const { orders, fillOrder, reload } = useOrders();
   const { tokensMap } = useBalanceUI();
 
-  const buyOrders =
-    orders?.[contracts.Exchange.EOrderStatus.PENDING]?.[
-      contracts.Exchange.EOrderType.BUY
-    ];
-  const sellOrders =
-    orders?.[contracts.Exchange.EOrderStatus.PENDING]?.[
-      contracts.Exchange.EOrderType.SELL
-    ];
+  const buyOrders = orders?.[EOrderStatus.PENDING]?.[EOrderType.BUY];
+  const sellOrders = orders?.[EOrderStatus.PENDING]?.[EOrderType.SELL];
 
   return mp(
     props,
@@ -45,17 +39,13 @@ export const OrderBook: React.FC<IComponentBaseProps> = (props) => {
       action={<ReloadIcon cursor="pointer" onClick={reload} />}
       title={"Order Book"}
     >
-      <Tabs defaultValue={contracts.Exchange.EOrderType.BUY}>
+      <Tabs defaultValue={EOrderType.BUY}>
         <TabsList>
-          <TabsTrigger value={contracts.Exchange.EOrderType.BUY}>
-            Buy Orders
-          </TabsTrigger>
-          <TabsTrigger value={contracts.Exchange.EOrderType.SELL}>
-            Sell Orders
-          </TabsTrigger>
+          <TabsTrigger value={EOrderType.BUY}>Buy Orders</TabsTrigger>
+          <TabsTrigger value={EOrderType.SELL}>Sell Orders</TabsTrigger>
         </TabsList>
 
-        <TabsContent value={contracts.Exchange.EOrderType.BUY}>
+        <TabsContent value={EOrderType.BUY}>
           <Table>
             <TableBody>
               <TableRow>
@@ -74,8 +64,8 @@ export const OrderBook: React.FC<IComponentBaseProps> = (props) => {
                     <TableCell>{order.etherAmountFormatted}</TableCell>
                     <TableCell>
                       {order.user !== account &&
-                        tokensMap[contractConfig.token.address] &&
-                        tokensMap[contractConfig.token.address]
+                        tokensMap[contractConfig.Token.address] &&
+                        tokensMap[contractConfig.Token.address]
                           .exchangeAmount! >= order.amountGet && (
                           <AsyncButton
                             variant={"secondary"}
@@ -91,7 +81,7 @@ export const OrderBook: React.FC<IComponentBaseProps> = (props) => {
           </Table>
         </TabsContent>
 
-        <TabsContent value={contracts.Exchange.EOrderType.SELL}>
+        <TabsContent value={EOrderType.SELL}>
           <Table>
             <TableBody>
               <TableRow>
@@ -110,8 +100,8 @@ export const OrderBook: React.FC<IComponentBaseProps> = (props) => {
                     <TableCell>{order.etherAmountFormatted}</TableCell>
                     <TableCell>
                       {order.user !== account &&
-                        tokensMap[contractConfig.exchange.address] &&
-                        tokensMap[contractConfig.exchange.address]
+                        tokensMap[contractConfig.Exchange.address] &&
+                        tokensMap[contractConfig.Exchange.address]
                           .exchangeAmount! >= order.amountGive && (
                           <AsyncButton
                             variant={"secondary"}

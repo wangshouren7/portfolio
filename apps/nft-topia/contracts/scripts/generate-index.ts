@@ -1,6 +1,5 @@
 import { writeFileSync } from "fs";
 import { artifacts } from "hardhat";
-import { format } from "prettier";
 import { getDeployedChainIdToAddresses, importEsm } from "./utils";
 
 async function generateIndex() {
@@ -37,26 +36,30 @@ async function generateIndex() {
 
   export * from "./typechain-types";
 
-  ${contracts.map((contract) => {
-    return `
+  ${contracts
+    .map((contract) => {
+      return `
   export const ${constantCase(contract.name)}_ABI = ${JSON.stringify(contract.abi, null, 2)} as const;
   export const ${constantCase(contract.name)}_EVENTS = ${JSON.stringify(contract.events, null, 2)} as const;
   `;
-  })}
+    })
+    .join("\n")}
 
   export const CHAIN_ID_TO_CONTRACT_CONFIG = {
     ${Object.entries(chainIdToAddresses)
       .map(([chainId, addresses]) => {
         return `
       ${chainId}: {
-        ${contracts.map((contract) => {
-          return `
+        ${contracts
+          .map((contract) => {
+            return `
           ${contract.name}: {
             address: "${addresses[contract.name]}",
             abi: ${constantCase(contract.name)}_ABI,
           },
           `;
-        })}
+          })
+          .join("\n")}
       },
       `;
       })
@@ -65,7 +68,7 @@ async function generateIndex() {
    
   `;
 
-  writeFileSync(`./index.ts`, await format(code, { parser: "typescript" }));
+  writeFileSync(`./index.ts`, code);
 }
 
 generateIndex();

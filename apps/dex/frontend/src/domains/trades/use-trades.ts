@@ -4,12 +4,13 @@ import { type RequiredDeep } from "type-fest";
 import { getLogs } from "viem/actions";
 import { useAccount, usePublicClient, useWatchContractEvent } from "wagmi";
 import { decorateTrade, type IDecoratedTrade } from "./decorate-trade";
-import { EXCHANGE_EVENTS, useContractConfig } from "@/contract-config";
+import { EXCHANGE_EVENTS } from "@/contract-config";
+import { useContractsConfigOfCurrentChain } from "../contracts/use-contract-configs";
 
 export function useTrades() {
   const { address: account } = useAccount();
   const client = usePublicClient();
-  const contractConfig = useContractConfig();
+  const contractConfig = useContractsConfigOfCurrentChain();
   const { data: trades, refetch } = useQuery({
     queryKey: ["trades"],
     queryFn: async () => {
@@ -25,7 +26,7 @@ export function useTrades() {
       }
 
       const logs = await getLogs(client, {
-        address: contractConfig.exchange.address,
+        address: contractConfig.Exchange.address,
         event: EXCHANGE_EVENTS.Trade,
         fromBlock: 0n,
         toBlock: "latest",
@@ -51,7 +52,7 @@ export function useTrades() {
   });
 
   useWatchContractEvent({
-    ...contractConfig.exchange,
+    ...contractConfig.Exchange,
     eventName: "Trade",
     onLogs: () => {
       refetch();

@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^9.7.0",
-    "@hookform/resolvers": "^5.0.1",
+    "@hookform/resolvers": "^5",
     "@pfl-wsr/nft-topia-contracts": "workspace:*",
     "@pfl-wsr/ui": "workspace:*",
     "@rainbow-me/rainbowkit": "^2",
@@ -32,7 +32,7 @@
     "react": "^19",
     "react-dom": "^19",
     "react-dropzone": "^14.3.8",
-    "react-hook-form": "^7.54.2",
+    "react-hook-form": "^7",
     "styled-components": "^6.1.17",
     "styled-jsx": "^5.1.6",
     "tailwindcss-animate": "^1",

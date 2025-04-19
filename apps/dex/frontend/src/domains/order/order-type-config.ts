@@ -1,11 +1,11 @@
-import { contracts } from "@/contracts";
+import { EOrderType } from "../contracts/types";
 
 export const orderTypeConfig = {
-  [contracts.Exchange.EOrderType.BUY]: {
+  [EOrderType.BUY]: {
     color: "text-green-500",
     symbol: "+",
   },
-  [contracts.Exchange.EOrderType.SELL]: {
+  [EOrderType.SELL]: {
     color: "text-red-500",
     symbol: "-",
   },

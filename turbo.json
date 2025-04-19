@@ -18,7 +18,7 @@
     "build": {
       "inputs": ["src/**"],
       "outputs": [".next/**"],
-      "dependsOn": ["^compile"]
+      "dependsOn": ["^compile", "^generate-index"]
     },
     "generate-index": {
       "inputs": ["scripts/**", "ignition/deployments/**/*"],

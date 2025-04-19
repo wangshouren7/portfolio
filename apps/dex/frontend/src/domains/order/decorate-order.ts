@@ -1,8 +1,9 @@
-import { contracts } from "@/contracts";
 import { formatUnits } from "@/lib/format";
 import dayjs from "dayjs";
 import { divide, round } from "mathjs";
 import { type Address } from "viem";
+import { type EOrderStatus, EOrderType } from "../contracts/types";
+import { ETHER_ADDRESS, type contracts2 } from "../contracts/configs";
 
 export interface IDecoratedBaseOrder {
   id: bigint;
@@ -13,9 +14,9 @@ export interface IDecoratedBaseOrder {
   tokenAmountFormatted: number;
   tokenPriceFormatted: number;
   tokenPrice: number;
-  orderType: contracts.Exchange.EOrderType;
+  orderType: EOrderType;
   /** The order type of the fill order, opposite to orderType */
-  fillOrderType: contracts.Exchange.EOrderType;
+  fillOrderType: EOrderType;
   timestamp: bigint;
   time: string;
   tokenGet: Address;
@@ -25,7 +26,7 @@ export interface IDecoratedBaseOrder {
 }
 
 export interface IDecoratedOrder extends IDecoratedBaseOrder {
-  status: contracts.Exchange.EOrderStatus;
+  status: EOrderStatus;
 }
 
 export function decorateBaseOrder({
@@ -36,21 +37,18 @@ export function decorateBaseOrder({
   amountGive,
   timestamp,
   tokenGet,
-}: Omit<
-  contracts.Exchange.Contract._OrderStruct,
-  "status"
->): IDecoratedBaseOrder {
+}: Omit<contracts2.Exchange._OrderStruct, "status">): IDecoratedBaseOrder {
   let etherAmount: bigint;
   let tokenAmount: bigint;
-  let orderType: contracts.Exchange.EOrderType;
-  if (tokenGive === contracts.ETHER_ADDRESS) {
+  let orderType: EOrderType;
+  if (tokenGive === ETHER_ADDRESS) {
     // buy
-    orderType = contracts.Exchange.EOrderType.BUY;
+    orderType = EOrderType.BUY;
     etherAmount = BigInt(amountGive);
     tokenAmount = BigInt(amountGet);
   } else {
     // sell
-    orderType = contracts.Exchange.EOrderType.SELL;
+    orderType = EOrderType.SELL;
     etherAmount = BigInt(amountGet);
     tokenAmount = BigInt(amountGive);
   }
@@ -76,9 +74,7 @@ export function decorateBaseOrder({
     tokenPrice,
     orderType,
     fillOrderType:
-      orderType === contracts.Exchange.EOrderType.BUY
-        ? contracts.Exchange.EOrderType.SELL
-        : contracts.Exchange.EOrderType.BUY,
+      orderType === EOrderType.BUY ? EOrderType.SELL : EOrderType.BUY,
     timestamp: BigInt(timestamp),
     time: dayjs(Number(timestamp) * 1000).format("YYYY-MM-DD HH:mm:ss"),
     tokenGet: tokenGet as Address,
@@ -91,9 +87,9 @@ export function decorateBaseOrder({
 export function decorateOrder({
   status,
   ...rest
-}: contracts.Exchange.Contract._OrderStruct): IDecoratedOrder {
+}: contracts2.Exchange._OrderStruct): IDecoratedOrder {
   return {
     ...decorateBaseOrder(rest),
-    status: status as contracts.Exchange.EOrderStatus,
+    status: status as EOrderStatus,
   } satisfies IDecoratedOrder;
 }

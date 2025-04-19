@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@eslint/eslintrc": "^3.3.0",
-    "@hookform/resolvers": "^3.9.0",
+    "@hookform/resolvers": "^5",
     "@pfl-wsr/dex-contracts": "workspace:*",
     "@pfl-wsr/log": "workspace:^",
     "@pfl-wsr/ui": "workspace:^",

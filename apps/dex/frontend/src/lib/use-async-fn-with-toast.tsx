@@ -1,6 +1,7 @@
 import { toast, useMemoizedFn } from "@pfl-wsr/ui";
 import { type Hash, isHash } from "viem";
 import { useGetTransactionUrl } from "./use-get-transaction-url";
+import { usePublicClient } from "wagmi";
 
 export const useTransactionFnWithToast = <
   T extends (...args: any) => Promise<Hash>,
@@ -16,24 +17,33 @@ export const useTransactionFnWithToast = <
 
 export const useRunTransactionFnWithToast = () => {
   const getTransactionUrl = useGetTransactionUrl();
+  const publicClient = usePublicClient();
 
   return useMemoizedFn(async (fn: () => Promise<Hash>) => {
-    const toastId = toast.loading("Sending transaction, please wait...");
+    let toastId = toast.loading("Sending transaction, please wait...");
 
     try {
       const tx = String(await fn());
-      if (!isHash(tx)) {
+      const url = isHash(tx) ? getTransactionUrl(tx) : undefined;
+      if (!url || !isHash(tx) || !publicClient) {
         toast.success("Transaction sent successfully", { id: toastId });
         return;
       }
 
-      const url = getTransactionUrl(tx);
-      toast.success(
-        <a className="!underline" href={url} rel="noreferrer" target="_blank">
-          Transaction sent successfully
-        </a>,
-        { id: toastId },
+      toastId = toast.loading(
+        <div>
+          Transaction is being sent, please wait
+          <a className="ml-1 link" href={url} rel="noreferrer" target="_blank">
+            confirming
+          </a>
+          ...
+        </div>,
+        {
+          id: toastId,
+        },
       );
+      await publicClient?.waitForTransactionReceipt({ hash: tx });
+      toast.success("Transaction confirmed", { id: toastId });
     } catch (error) {
       toast.error("Transaction sent failed", { id: toastId });
       throw error;

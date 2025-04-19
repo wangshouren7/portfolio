@@ -39,6 +39,8 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
-    "fast-glob": "^3.3.2"
+    "change-case": "^5.4.4",
+    "fast-glob": "^3.3.2",
+    "tsx": "^4.19.3"
   }
 }

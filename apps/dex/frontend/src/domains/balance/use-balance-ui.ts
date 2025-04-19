@@ -10,10 +10,11 @@ import {
 import { useMap, useMemoizedFn } from "@pfl-wsr/ui";
 import { formatUnits } from "@/lib/format";
 import { logger } from "@/lib/logger";
-import { contracts } from "@/contracts";
 import { useRunTransactionFnWithToast } from "@/lib/use-async-fn-with-toast";
 import { useContractConfig } from "@/contract-config";
 import { keyBy } from "lodash-es";
+import { useContractsConfigOfCurrentChain } from "../contracts/use-contract-configs";
+import { ETHER_ADDRESS } from "../contracts/configs";
 
 interface IToken {
   name: string;
@@ -31,27 +32,27 @@ function useTokens(account: Address) {
       address: account,
     });
 
-  const contractConfig = useContractConfig();
+  const contractConfig = useContractsConfigOfCurrentChain();
 
   const result = useReadContracts({
     contracts: [
       {
-        ...contractConfig.exchange, // ether of exchange
+        ...contractConfig.Exchange, // ether of exchange
         functionName: "balanceOf",
-        args: [contracts.ETHER_ADDRESS, account],
+        args: [ETHER_ADDRESS, account],
       },
       {
-        ...contractConfig.token, // token of wallet
+        ...contractConfig.Token, // token of wallet
         functionName: "balanceOf",
         args: [account],
       },
       {
-        ...contractConfig.exchange, // token of exchange
+        ...contractConfig.Exchange, // token of exchange
         functionName: "balanceOf",
-        args: [contractConfig.token.address, account],
+        args: [contractConfig.Token.address, account],
       },
       {
-        ...contractConfig.token, // symbol of token
+        ...contractConfig.Token, // symbol of token
         functionName: "symbol",
       },
     ],
@@ -65,7 +66,7 @@ function useTokens(account: Address) {
   const tokens: IToken[] = [
     {
       name: "Ether",
-      address: contracts.ETHER_ADDRESS,
+      address: ETHER_ADDRESS,
       symbol: "ETH",
       exchangeAmount: ethOfExchange,
       walletAmount: etherOfWallet,
@@ -74,7 +75,7 @@ function useTokens(account: Address) {
     },
     {
       name: "Token",
-      address: contractConfig.token.address,
+      address: contractConfig.Token.address,
       symbol: tokenSymbol ?? "",
       exchangeAmount: tokenOfExchange,
       walletAmount: tokenOfWallet,
@@ -117,7 +118,7 @@ function useTransact() {
     if (value && value > 0) {
       return await runTransactionFnWithToast(() =>
         writeContractAsync({
-          ...contractConfig.exchange,
+          ...contractConfig.Exchange,
           functionName: "withdrawEther",
           args: [value],
         }),
@@ -129,9 +130,9 @@ function useTransact() {
     if (value && value > 0) {
       return await runTransactionFnWithToast(() =>
         writeContractAsync({
-          ...contractConfig.exchange,
+          ...contractConfig.Exchange,
           functionName: "withdrawToken",
-          args: [contractConfig.token.address, value],
+          args: [contractConfig.Token.address, value],
         }),
       );
     }
@@ -141,7 +142,7 @@ function useTransact() {
     if (value && value > 0) {
       await runTransactionFnWithToast(() =>
         writeContractAsync({
-          ...contractConfig.exchange,
+          ...contractConfig.Exchange,
           functionName: "depositEther",
           value,
         }),
@@ -153,17 +154,17 @@ function useTransact() {
     if (value && value > 0) {
       await runTransactionFnWithToast(() =>
         writeContractAsync({
-          ...contractConfig.token,
+          ...contractConfig.Token,
           functionName: "approve",
-          args: [contractConfig.exchange.address, value],
+          args: [contractConfig.Exchange.address, value],
         }),
       );
 
       await runTransactionFnWithToast(() =>
         writeContractAsync({
-          ...contractConfig.exchange,
+          ...contractConfig.Exchange,
           functionName: "depositToken",
-          args: [contractConfig.token.address, value],
+          args: [contractConfig.Token.address, value],
         }),
       );
     }
@@ -185,7 +186,7 @@ function useBalanceUI() {
 
   const onDeposit = useMemoizedFn((address: Address) => {
     const amount = parseEther(String(valueMap.get(address)));
-    if (address === contracts.ETHER_ADDRESS) {
+    if (address === ETHER_ADDRESS) {
       return depositEther(amount);
     }
 
@@ -193,7 +194,7 @@ function useBalanceUI() {
   });
 
   const onWithDraw = useMemoizedFn((address: Address) => {
-    if (address === contracts.ETHER_ADDRESS) {
+    if (address === ETHER_ADDRESS) {
       return withdrawEther(parseEther(String(valueMap.get(address))));
     }
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { contracts } from "@/contracts";
 import { useNewOrder } from "@/domains/order/use-new-order";
 import {
   Form,
@@ -19,6 +18,7 @@ import {
 import React from "react";
 import { PanelCard } from "./panel-card";
 import { AsyncButton } from "./async-button";
+import { EOrderType } from "@/domains/contracts/types";
 
 export const NewOrder: React.FC<IComponentBaseProps> = (props) => {
   const { tab, setTab, form, onSubmit } = useNewOrder();
@@ -26,17 +26,10 @@ export const NewOrder: React.FC<IComponentBaseProps> = (props) => {
   return mp(
     props,
     <PanelCard requireConnect title={"New Order"}>
-      <Tabs
-        value={tab}
-        onValueChange={(x) => setTab(x as contracts.Exchange.EOrderType)}
-      >
+      <Tabs value={tab} onValueChange={(x) => setTab(x as EOrderType)}>
         <TabsList>
-          <TabsTrigger value={contracts.Exchange.EOrderType.BUY}>
-            Buy
-          </TabsTrigger>
-          <TabsTrigger value={contracts.Exchange.EOrderType.SELL}>
-            Sell
-          </TabsTrigger>
+          <TabsTrigger value={EOrderType.BUY}>Buy</TabsTrigger>
+          <TabsTrigger value={EOrderType.SELL}>Sell</TabsTrigger>
         </TabsList>
       </Tabs>
 

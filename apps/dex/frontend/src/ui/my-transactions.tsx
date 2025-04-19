@@ -1,5 +1,4 @@
 "use client";
-import { contracts } from "@/contracts";
 import { orderTypeConfig } from "@/domains/order/order-type-config";
 import { useOrders } from "@/domains/order/use-orders";
 import { useTrades } from "@/domains/trades/use-trades";
@@ -22,6 +21,7 @@ import React from "react";
 import { useAccount } from "wagmi";
 import { PanelCard } from "./panel-card";
 import { AsyncButton } from "./async-button";
+import { EOrderStatus } from "@/domains/contracts/types";
 
 export const MyTransactions: React.FC<IComponentBaseProps> = (props) => {
   const { address: account } = useAccount();
@@ -88,29 +88,27 @@ export const MyTransactions: React.FC<IComponentBaseProps> = (props) => {
             </TableHeader>
 
             <TableBody>
-              {orders?.[contracts.Exchange.EOrderStatus.PENDING].my.map(
-                (order) => (
-                  <TableRow
-                    key={order.id}
-                    className={cn(orderTypeConfig[order.orderType].color)}
-                  >
-                    <TableCell>{order.time}</TableCell>
-                    <TableCell>
-                      {orderTypeConfig[order.orderType].symbol}
-                      {order.tokenAmountFormatted}
-                    </TableCell>
-                    <TableCell>{order.tokenPrice}</TableCell>
-                    <TableCell>
-                      <AsyncButton
-                        variant={"secondary"}
-                        onClick={() => cancelOrder(order.id)}
-                      >
-                        Cancel
-                      </AsyncButton>
-                    </TableCell>
-                  </TableRow>
-                ),
-              )}
+              {orders?.[EOrderStatus.PENDING].my.map((order) => (
+                <TableRow
+                  key={order.id}
+                  className={cn(orderTypeConfig[order.orderType].color)}
+                >
+                  <TableCell>{order.time}</TableCell>
+                  <TableCell>
+                    {orderTypeConfig[order.orderType].symbol}
+                    {order.tokenAmountFormatted}
+                  </TableCell>
+                  <TableCell>{order.tokenPrice}</TableCell>
+                  <TableCell>
+                    <AsyncButton
+                      variant={"secondary"}
+                      onClick={() => cancelOrder(order.id)}
+                    >
+                      Cancel
+                    </AsyncButton>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TabsContent>

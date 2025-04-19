@@ -1,6 +1,15 @@
 import { resolve } from "path";
 import { existsSync } from "fs";
 import fg from "fast-glob";
+// @ts-expect-error it's ok
+import { tsImport } from "tsx/esm/api";
+
+/**
+ * Import an ESM module in hardhat.
+ *
+ * @see https://github.com/NomicFoundation/hardhat/issues/3385#issuecomment-2508469810
+ */
+export const importEsm = (m: string) => tsImport(m, __filename);
 
 export async function getLocalhostDeployedAddressesJSON() {
   const addressFile = resolve(
@@ -26,8 +35,7 @@ export async function getDeployedChainIdToAddresses() {
   const ret = {} as Record<
     string,
     {
-      Token: string;
-      Exchange: string;
+      [ContractName: string]: string;
     }
   >;
 
@@ -39,10 +47,12 @@ export async function getDeployedChainIdToAddresses() {
       }
 
       const json = (await import(addressFile)) as Record<string, string>;
-      ret[chainId] = {
-        Token: json["TokenModule#Token"],
-        Exchange: json["ExchangeModule#Exchange"],
-      };
+      ret[chainId] = {};
+      Object.entries(json)
+        .filter(([key]) => key.includes("#"))
+        .forEach(([key, value]) => {
+          ret[chainId][key.split("#")[1]] = value;
+        });
     }),
   );
 
