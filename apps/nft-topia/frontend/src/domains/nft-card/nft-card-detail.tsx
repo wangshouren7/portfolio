@@ -10,6 +10,7 @@ import { FormBuilder } from "@/modules/ui/form/form-builder";
 import { z } from "zod";
 import { type IComponentBaseProps, Input, mp } from "@pfl-wsr/ui";
 import { useTranslations } from "next-intl";
+import { parseEther } from "viem";
 
 const RESELL_SCHEMA = z.object({
   price: z.coerce.number().gt(0),
@@ -47,7 +48,10 @@ function ResellForm({ nft }: IResellFormProps) {
         children: t("Resell"),
       }}
       onSubmit={async (values) => {
-        await resellToken(nft.tokenId.toString(), BigInt(values.price));
+        await resellToken(
+          nft.tokenId.toString(),
+          BigInt(parseEther(values.price.toString())),
+        );
       }}
     />
   );

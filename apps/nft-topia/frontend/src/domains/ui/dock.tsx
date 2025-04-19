@@ -12,7 +12,7 @@ export const Dock: React.FC<IComponentBaseProps> = (props) => {
 
   return mp(
     props,
-    <div className="dock lg:hidden">
+    <div className="dock static lg:hidden">
       {menuItems.map(({ href, icon, label }) => (
         <Link
           key={href}
