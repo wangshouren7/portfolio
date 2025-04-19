@@ -60,8 +60,6 @@ export function useCreateToken() {
 
       return hash;
     });
-
-    router.push(pathnames.myNft());
   });
 }
 

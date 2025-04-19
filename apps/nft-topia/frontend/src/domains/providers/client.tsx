@@ -66,7 +66,7 @@ interface IProvidersProps {
 
 export function ClientProviders({ children }: IProvidersProps) {
   return (
-    <ThemeProvider attribute={["class", "data-theme"]}>
+    <ThemeProvider defaultTheme="dark" attribute={["class", "data-theme"]}>
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <RainbowkitProvider showRecentTransactions modalSize="wide">

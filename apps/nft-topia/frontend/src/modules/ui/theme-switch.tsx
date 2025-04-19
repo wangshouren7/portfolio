@@ -28,7 +28,7 @@ export const ThemeSwitch: React.FC<IComponentBaseProps> = (props) => {
       document.documentElement.classList.remove("dark");
       update();
     }
-  }, [theme]);
+  }, [theme, update]);
 
   if (!isMounted()) {
     return null;

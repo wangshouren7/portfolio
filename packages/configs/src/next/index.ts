@@ -5,7 +5,6 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  transpilePackages: ["@pfl-wsr/ui"],
   output: "standalone",
   outputFileTracingIncludes: {
     "/": ["./prisma/**/*", "./node_modules/.prisma/**/*"],
