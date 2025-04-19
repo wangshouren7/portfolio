@@ -15,6 +15,7 @@ overrides:
   '@pnpm/logger': 5.2.0
   eslint: 9.22.0
   next: 15.2.2
+  daisyui: ^5
 
 importers:
 
@@ -255,8 +256,8 @@ importers:
         specifier: ^4.17.12
         version: 4.17.12
       daisyui:
-        specifier: ^5.0.4
-        version: 5.0.4
+        specifier: ^5
+        version: 5.0.9
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -449,7 +450,7 @@ importers:
         specifier: ^5.4.4
         version: 5.4.4
       daisyui:
-        specifier: ^5.0.9
+        specifier: ^5
         version: 5.0.9
       lodash-es:
         specifier: ^4
@@ -1017,6 +1018,9 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
+      lucide-react:
+        specifier: ^0.396.0
+        version: 0.396.0(react@19.0.0)
       motion:
         specifier: ^12.4.10
         version: 12.5.0(@emotion/is-prop-valid@1.2.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -6885,9 +6889,6 @@ packages:
   d@1.0.2:
     resolution: {integrity: sha512-MOqHvMWF9/9MX6nza0KgvFH4HpMU0EF5uUDXqX/BtxtU8NfB0QzRtJ8Oe/6SuS4kbhyzVJwjd97EA4PKrzJ8bw==}
     engines: {node: '>=0.12'}
-
-  daisyui@5.0.4:
-    resolution: {integrity: sha512-9X3oX/k9hPBCslAECk8kYfvwgrz6Grs0lN7VI0/ZTM/hUfq1uFREHxCcBCCq0QROpN183N19B1hTNRWGipO2Eg==}
 
   daisyui@5.0.9:
     resolution: {integrity: sha512-RsaehHh45f+0shWgZZaOY09/8eOae2voRsqJCD71j9yrnYgcke0Nj5ys0ZxrW4SPcc4+q96kWyJu0Z8P1zZdoA==}
@@ -20577,8 +20578,6 @@ snapshots:
     dependencies:
       es5-ext: 0.10.64
       type: 2.7.3
-
-  daisyui@5.0.4: {}
 
   daisyui@5.0.9: {}
 
