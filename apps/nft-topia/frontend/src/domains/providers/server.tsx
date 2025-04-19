@@ -7,5 +7,7 @@ interface IProvidersProps {
 }
 
 export function ServerProviders({ children }: IProvidersProps) {
-  return <NextIntlClientProvider>{children}</NextIntlClientProvider>;
+  return (
+    <NextIntlClientProvider locale={"en"}>{children}</NextIntlClientProvider>
+  );
 }

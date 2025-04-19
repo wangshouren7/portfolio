@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
 
 import { TooltipProvider } from "@pfl-wsr/ui";
+import { Toaster as Sonner, type ToasterProps } from "sonner";
 
 import {
   RainbowKitProvider as RainbowKitProviderBase,
@@ -69,10 +70,32 @@ export function ClientProviders({ children }: IProvidersProps) {
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <RainbowkitProvider showRecentTransactions modalSize="wide">
-            <TooltipProvider>{children}</TooltipProvider>
+            <TooltipProvider>
+              {children}
+              <Toaster />
+            </TooltipProvider>
           </RainbowkitProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </ThemeProvider>
   );
 }
+
+const Toaster = ({ ...props }: ToasterProps) => {
+  const { theme = "system" } = useTheme();
+
+  return (
+    <Sonner
+      className="toaster group"
+      style={
+        {
+          "--normal-bg": "var(--popover)",
+          "--normal-text": "var(--popover-foreground)",
+          "--normal-border": "var(--border)",
+        } as React.CSSProperties
+      }
+      theme={theme as ToasterProps["theme"]}
+      {...props}
+    />
+  );
+};

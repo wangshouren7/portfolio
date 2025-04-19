@@ -5,6 +5,24 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  transpilePackages: ["@pfl-wsr/ui"],
+  output: "standalone",
+  outputFileTracingIncludes: {
+    "/": ["./prisma/**/*", "./node_modules/.prisma/**/*"],
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
+    turbo: {
+      rules: {
+        "*.svg": {
+          loaders: ["@svgr/webpack"],
+          as: "*.js",
+        },
+      },
+    },
+  },
 
   webpack(config) {
     const fileLoaderRule = config.module.rules.find((rule: any) =>
@@ -40,23 +58,6 @@ const nextConfig: NextConfig = {
         ],
       },
     });
-  },
-  output: "standalone",
-  outputFileTracingIncludes: {
-    "/": ["./prisma/**/*", "./node_modules/.prisma/**/*"],
-  },
-  experimental: {
-    serverActions: {
-      bodySizeLimit: "10mb",
-    },
-    turbo: {
-      rules: {
-        "*.svg": {
-          loaders: ["@svgr/webpack"],
-          as: "*.js",
-        },
-      },
-    },
   },
 };
 

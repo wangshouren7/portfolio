@@ -6,8 +6,8 @@ import { Navbar } from "@/domains/ui/navbar/navbar";
 import { getLocale } from "next-intl/server";
 import { type Locale } from "@/i18n/config";
 import { Providers } from "@/domains/providers";
-import { Toaster } from "@pfl-wsr/ui";
-import { Dock } from "@/domains/ui/navbar/dock";
+import { Dock } from "@/domains/ui/dock";
+import { NextIntlClientProvider } from "next-intl";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,17 +30,17 @@ export default async function RootLayout({
       <body
         className={`${inter.className} bg-background text-foreground antialiased`}
       >
-        <Providers>
-          <div className="flex h-screen flex-col">
-            <Navbar />
-            <div className="flex-1 overflow-auto p-4">
-              <div className="container mx-auto">{children}</div>
+        <NextIntlClientProvider>
+          <Providers>
+            <div className="flex h-screen flex-col">
+              <Navbar />
+              <div className="flex-1 overflow-auto p-4">
+                <div className="container mx-auto">{children}</div>
+              </div>
+              <Dock />
             </div>
-            <Dock />
-          </div>
-
-          <Toaster richColors />
-        </Providers>
+          </Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

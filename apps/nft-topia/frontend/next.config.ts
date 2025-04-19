@@ -13,4 +13,13 @@ const withNextIntl = createNextIntlPlugin({
   },
 });
 
-export default withNextIntl(merge(nextConfig, {} satisfies NextConfig));
+export default withNextIntl(
+  merge({}, nextConfig, {
+    webpack: (config, context) => {
+      nextConfig.webpack?.(config, context);
+      /** https://github.com/WalletConnect/walletconnect-monorepo/issues/4466#issuecomment-2520872647 */
+      // config.externals.push("pino-pretty", "lokijs", "encoding");
+      return config;
+    },
+  } satisfies NextConfig),
+);

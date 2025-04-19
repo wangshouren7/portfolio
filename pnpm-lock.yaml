@@ -509,6 +509,9 @@ importers:
       react-hook-form:
         specifier: 7.55.0
         version: 7.55.0(react@19.0.0)
+      sonner:
+        specifier: ^2.0.1
+        version: 2.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       styled-components:
         specifier: ^6.1.17
         version: 6.1.17(react-dom@19.0.0(react@19.0.0))(react@19.0.0)

@@ -1,5 +1,6 @@
+"use client";
+
 import React from "react";
-import { ServerProviders } from "./server";
 import { ClientProviders } from "./client";
 
 interface IProvidersProps {
@@ -7,9 +8,5 @@ interface IProvidersProps {
 }
 
 export const Providers: React.FC<IProvidersProps> = (props) => {
-  return (
-    <ServerProviders>
-      <ClientProviders>{props.children}</ClientProviders>
-    </ServerProviders>
-  );
+  return <ClientProviders>{props.children}</ClientProviders>;
 };

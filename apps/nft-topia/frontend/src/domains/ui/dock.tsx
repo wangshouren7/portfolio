@@ -1,12 +1,13 @@
 "use client";
+
 import { cn, type IComponentBaseProps, mp } from "@pfl-wsr/ui";
-import React from "react";
-import { useMenuItems } from "./use-menu-items";
 import Link from "next/link";
+import React from "react";
 import { usePathname } from "next/navigation";
+import { useMenuItems } from "./navbar/use-menu-items";
 
 export const Dock: React.FC<IComponentBaseProps> = (props) => {
-  const menuItems = useMenuItems(true);
+  const menuItems = useMenuItems();
   const pathname = usePathname();
 
   return mp(
