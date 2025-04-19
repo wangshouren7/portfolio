@@ -32,9 +32,21 @@ importers:
 
   apps/__template__/contracts:
     dependencies:
+      '@types/lodash':
+        specifier: ^4.17.16
+        version: 4.17.16
+      change-case:
+        specifier: ^5.4.4
+        version: 5.4.4
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.3
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      tsx:
+        specifier: ^4.19.3
+        version: 4.19.3
     devDependencies:
       '@nomicfoundation/hardhat-chai-matchers':
         specifier: ^2.0.0

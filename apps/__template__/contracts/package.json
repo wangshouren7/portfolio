@@ -38,6 +38,10 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "fast-glob": "^3.3.2"
+    "@types/lodash": "^4.17.16",
+    "change-case": "^5.4.4",
+    "fast-glob": "^3.3.2",
+    "lodash": "^4.17.21",
+    "tsx": "^4.19.3"
   }
 }

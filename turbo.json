@@ -13,12 +13,16 @@
     },
     "check-types": {
       "inputs": ["src/**", "scripts/**", "test/**", "tests/**"],
-      "dependsOn": ["compile", "^compile"]
+      "dependsOn": ["compile", "^compile", "generate-index"]
     },
     "build": {
       "inputs": ["src/**"],
       "outputs": [".next/**"],
       "dependsOn": ["^compile"]
+    },
+    "generate-index": {
+      "inputs": ["scripts/**", "ignition/deployments/**/*"],
+      "outputs": ["index.ts"]
     },
     "test": {
       "inputs": ["src/**/*", "app/**/*", "tests/**/*", "test/**/*"]
