@@ -46,6 +46,7 @@ export function FileUpload(props: IControllableComponentProps<string>) {
       {url && (
         <div className="flex items-center gap-2">
           <NftImg
+            className="w-[300px]"
             imgProps={{
               src: url,
               alt: "nft-image",
