@@ -38,7 +38,7 @@ export const NftImg: React.FC<INftImgProps> = ({
         />
       )}
 
-      <div className="aspect-[3/4] w-full">
+      <div className="aspect-[3/4] w-full overflow-hidden">
         <img
           alt={"nft image"}
           className={cn("h-full w-full rounded-2xl object-cover")}
