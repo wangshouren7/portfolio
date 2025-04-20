@@ -30,6 +30,6 @@ export async function marketItemToNft(
     sold,
     tokenURI,
     tokenId,
-    price: formatEther(BigInt(price)),
+    price: +formatEther(BigInt(price)),
   };
 }
