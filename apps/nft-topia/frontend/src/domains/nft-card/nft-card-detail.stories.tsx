@@ -15,7 +15,7 @@ const mockNft: INft = {
   file: "https://picsum.photos/300/320",
   description:
     "This is a sample NFT card detail, which is used for testing. This is a sample NFT card detail, which is used for testing. This is a sample NFT card detail, which is used for testing. This is a sample NFT card detail, which is used for testing. ",
-  price: 0.5,
+  price: "0.5",
   tokenId: BigInt(1),
   owner: "0x1234567890123456789012345678901234567890" as `0x${string}`,
   seller: "0x0987654321098765432109876543210987654321" as `0x${string}`,

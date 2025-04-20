@@ -12,6 +12,7 @@ import Image from "next/image";
 import { useMenuItems } from "./use-menu-items";
 import { useAccount } from "wagmi";
 import { useTranslations } from "next-intl";
+import { GithubLink } from "@/modules/ui/github-link";
 
 export const Navbar: React.FC<IComponentBaseProps> = (props) => {
   const pathname = usePathname();
@@ -68,6 +69,7 @@ export const Navbar: React.FC<IComponentBaseProps> = (props) => {
         )}
         <ThemeSwitch />
         <LocaleSwitcher />
+        <GithubLink className="w-[40px]" iconSize={32} />
       </div>
     </div>,
   );

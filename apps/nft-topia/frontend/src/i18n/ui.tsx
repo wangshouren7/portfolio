@@ -14,13 +14,13 @@ export const LocaleSwitcher: React.FC<IComponentBaseProps> = (props) => {
         <svg
           className="lucide lucide-languages-icon lucide-languages"
           fill="none"
-          height="24"
+          height="32"
           stroke="currentColor"
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth="2"
           viewBox="0 0 24 24"
-          width="24"
+          width="32"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path d="m5 8 6 6" />
