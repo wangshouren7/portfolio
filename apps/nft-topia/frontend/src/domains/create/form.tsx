@@ -72,7 +72,7 @@ export function CreateForm() {
       schema={CREATE_FORM_SCHEMA}
       styles={{
         label: {
-          className: "text-2xl font-bold",
+          className: "text-xl font-bold",
         },
       }}
       onSubmit={onSubmit}
