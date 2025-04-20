@@ -1,6 +1,6 @@
 # Portfolio of Shouren Wang
 
-A modern monorepo showcasing full-stack development capabilities, featuring a portfolio website and a decentralized token exchange platform.
+A modern monorepo showcasing full-stack development capabilities, featuring a portfolio website, a decentralized token exchange platform, and an NFT marketplace.
 
 ## Overview
 
@@ -12,18 +12,19 @@ This repository contains multiple applications built with modern web technologie
 | --------- | -------------------------------------------------------------------- | ---------------------------------- | ------------------------- |
 | Portfolio | Personal portfolio website                                           | https://portfolio.wangshouren.site | [code](./apps/portfolio/) |
 | Dex       | Decentralized token exchange platform supporting ERC20 token trading | https://dex.wangshouren.site       | [code](./apps/dex)        |
+| NFT Topia | NFT marketplace for minting, trading, and collecting digital assets  | https://nft-topia.wangshouren.site | [code](./apps/nft-topia)  |
 
 ## Skill stack
 
-| Domain             | Technologies                                                                                                          |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| Frontend           | - Next.js (React Framework)<br>- TypeScript<br>- TailwindCSS<br>- Three.js (3D Graphics)<br>- Standalone Mode Support |
-| Blockchain         | - Solidity ^0.8.28<br>- Hardhat<br>- ERC20 Token Standard<br>- Smart Contract Development                             |
-| Testing            | - Playwright<br>- Vitest<br>- GitHub Actions CI                                                                       |
-| DevOps             | - Docker Multi-stage Builds<br>- GitHub Container Registry<br>- Multi-architecture Support (linux/amd64, linux/arm64) |
-| Development Tools  | - Git<br>- GitHub Actions<br>- VSCode<br>- Docker                                                                     |
-| Project Management | - Monorepo (Turborepo)<br>- pnpm Workspace<br>- Remote Caching                                                        |
-| Code Quality       | - ESLint<br>- TypeScript Strict Mode<br>- Automated Testing                                                           |
+| Domain             | Technologies                                                                                                                |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| Frontend           | - Next.js (React Framework)<br>- TypeScript<br>- TailwindCSS<br>- Three.js (3D Graphics)<br>- Standalone Mode Support       |
+| Blockchain         | - Solidity ^0.8.28<br>- Hardhat<br>- ERC20 Token Standard<br>- ERC721/ERC1155 NFT Standards<br>- Smart Contract Development |
+| Testing            | - Playwright<br>- Vitest<br>- GitHub Actions CI                                                                             |
+| DevOps             | - Docker Multi-stage Builds<br>- GitHub Container Registry<br>- Multi-architecture Support (linux/amd64, linux/arm64)       |
+| Development Tools  | - Git<br>- GitHub Actions<br>- VSCode<br>- Docker                                                                           |
+| Project Management | - Monorepo (Turborepo)<br>- pnpm Workspace<br>- Remote Caching                                                              |
+| Code Quality       | - ESLint<br>- TypeScript Strict Mode<br>- Automated Testing                                                                 |
 
 ## Getting Started
 
@@ -66,9 +67,12 @@ Add this setting to vscode settings.json.
 ├── apps/
 │   ├── portfolio/
 │   │   └── frontend/         # Portfolio website
-│   └── dex/
-│       ├── frontend/         # DApp frontend
-│       └── contracts/        # Smart contracts
+│   ├── dex/
+│   │   ├── frontend/         # DApp frontend
+│   │   └── contracts/        # Smart contracts
+│   └── nft-topia/
+│       ├── frontend/         # NFT marketplace frontend
+│       └── contracts/        # NFT smart contracts
 ├── packages/
 │   └── configs/             # Shared configurations
 ├── docker/                  # Docker configurations

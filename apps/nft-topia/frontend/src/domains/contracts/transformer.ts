@@ -1,9 +1,15 @@
-import { type PublicClient } from "viem";
+import { formatEther, type PublicClient } from "viem";
 import { type ICreateFormValues } from "../create/form-values";
 import { type contracts, type IContractsConfig } from "./config";
 
 export async function marketItemToNft(
-  { owner, seller, sold, tokenId }: contracts.NFTMarketplace.MarketItemStruct,
+  {
+    owner,
+    seller,
+    sold,
+    tokenId,
+    price,
+  }: contracts.NFTMarketplace.MarketItemStruct,
   client: PublicClient,
   configs: IContractsConfig,
 ) {
@@ -18,11 +24,12 @@ export async function marketItemToNft(
   }).then((res) => res.json());
 
   return {
+    ...json,
     owner,
     seller,
     sold,
     tokenURI,
     tokenId,
-    ...json,
+    price: formatEther(BigInt(price)),
   };
 }

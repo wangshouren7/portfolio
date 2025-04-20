@@ -33,13 +33,20 @@ export const projects = [
     description:
       "A modern portfolio website built with Next.js and Three.js. Features interactive 3D graphics, responsive design, and a custom rendering engine for 3D models. Implemented with TypeScript, TailwindCSS, and deployed with Docker multi-stage builds.",
     date: "2025",
-    demoLink: "https://github.com/wangshouren7/portfolio",
+    demoLink: "https://portfolio.wangshouren.site",
   },
   {
     name: "Decentralized Exchange (DEX)",
     description:
       "A full-stack decentralized exchange platform for trading ERC20 tokens. Built with Next.js, TypeScript, and Solidity smart contracts. Features include real-time price charts, order books, token swaps, and wallet integration with secure transaction handling.",
     date: "2025",
-    demoLink: "https://github.com/wangshouren7/portfolio",
+    demoLink: "https://dex.wangshouren.site",
+  },
+  {
+    name: "NFT Topia",
+    description:
+      "NFT marketplace for minting, trading, and collecting digital assets.",
+    date: "2025",
+    demoLink: "https://nft-topia.wangshouren.site",
   },
 ];
