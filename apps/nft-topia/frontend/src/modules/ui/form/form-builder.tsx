@@ -61,7 +61,7 @@ export const FormBuilder = <TSchema extends z.ZodObject<any>>(
       {mp(
         props,
         <form
-          className="flex w-full flex-col gap-10"
+          className="flex w-full flex-col gap-6"
           onSubmit={form.handleSubmit(run)}
         >
           {items.map(
@@ -78,7 +78,7 @@ export const FormBuilder = <TSchema extends z.ZodObject<any>>(
                 disabled={disabled === true}
                 name={name}
                 render={({ field }) => (
-                  <FormItem className="flex w-full flex-col gap-3">
+                  <FormItem className="flex w-full flex-col gap-4">
                     {mp(
                       styles?.label,
                       <FormLabel className="paragraph-semibold text-dark400_light800">
@@ -91,9 +91,7 @@ export const FormBuilder = <TSchema extends z.ZodObject<any>>(
 
                     {mp(
                       styles?.control,
-                      <FormControl className="mt-3.5">
-                        {renderControl(field as any)}
-                      </FormControl>,
+                      <FormControl>{renderControl(field as any)}</FormControl>,
                     )}
 
                     {mp(

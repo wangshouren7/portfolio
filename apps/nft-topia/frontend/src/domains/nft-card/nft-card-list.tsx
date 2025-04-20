@@ -29,7 +29,7 @@ export const NFTCardList: React.FC<INFTCardListProps> = (props) => {
   return mp(
     props,
     <div className="flex flex-col">
-      <div className="prose">
+      <div>
         <h2>{title}</h2>
       </div>
 

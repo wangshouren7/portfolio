@@ -17,7 +17,7 @@ export const ContractConfirming: Story = {
     children: "Click me",
     onClick: () => {
       toast.loading(
-        <div className="prose">
+        <div>
           Transaction is being sent, please wait
           <a
             className="ml-1 link"

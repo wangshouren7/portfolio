@@ -14,5 +14,11 @@
     dark --prefersdark;
 }
 
+@layer base {
+  h2 {
+    @apply my-4 text-2xl font-bold;
+  }
+}
+
 @layer components {
 }

@@ -9,10 +9,8 @@ import {
 } from "wagmi";
 import { contracts } from "./config";
 import { values } from "lodash-es";
-import { useAsync, useMemoizedFn } from "@pfl-wsr/ui";
+import { toast, useAsync, useMemoizedFn } from "@pfl-wsr/ui";
 import { useRunTransactionFnWithToast } from "@/modules/web3/use-async-fn-with-toast";
-import { useRouter } from "next/navigation";
-import { pathnames } from "../routes";
 import { marketItemToNft } from "./transformer";
 
 function useContractsConfigOfCurrentChain() {
@@ -38,15 +36,50 @@ function useListingPrice() {
   });
 }
 
+function useCheckConnect() {
+  const { address } = useAccount();
+
+  return useMemoizedFn(() => {
+    if (address) {
+      return true;
+    }
+
+    toast.info("Please connect your wallet");
+    return false;
+  });
+}
+
+function useMarketItemEventsCallback(onChange: () => void) {
+  const configs = useContractsConfigOfCurrentChain();
+
+  useWatchContractEvent({
+    ...configs.NFTMarketplace,
+    eventName: "MarketItemCreated",
+    onLogs: onChange,
+  });
+
+  useWatchContractEvent({
+    ...configs.NFTMarketplace,
+    eventName: "MarketItemSold",
+    onLogs: onChange,
+  });
+
+  useWatchContractEvent({
+    ...configs.NFTMarketplace,
+    eventName: "MarketItemRelisted",
+    onLogs: onChange,
+  });
+}
+
 export function useCreateToken() {
   const configs = useContractsConfigOfCurrentChain();
   const { writeContractAsync } = useWriteContract();
   const { data: listingPrice } = useListingPrice();
   const runTx = useRunTransactionFnWithToast();
-  const router = useRouter();
+  const checkAndOpenConnectModal = useCheckConnect();
 
   return useMemoizedFn(async (tokenURI: string, price: bigint) => {
-    if (listingPrice == null) {
+    if (listingPrice == null || !checkAndOpenConnectModal()) {
       return;
     }
 
@@ -66,34 +99,12 @@ export function useCreateToken() {
 export function useFetchMarketItems() {
   const configs = useContractsConfigOfCurrentChain();
 
-  useWatchContractEvent({
-    ...configs.NFTMarketplace,
-    eventName: "MarketItemCreated",
-    onLogs: () => {
-      ret.refetch();
-    },
-  });
-
-  useWatchContractEvent({
-    ...configs.NFTMarketplace,
-    eventName: "MarketItemSold",
-    onLogs: () => {
-      ret.refetch();
-    },
-  });
-
-  useWatchContractEvent({
-    ...configs.NFTMarketplace,
-    eventName: "MarketItemRelisted",
-    onLogs: () => {
-      ret.refetch();
-    },
-  });
-
   const ret = useReadContract({
     ...configs.NFTMarketplace,
     functionName: "fetchMarketItems",
   });
+
+  useMarketItemEventsCallback(ret.refetch);
 
   return ret;
 }
@@ -117,11 +128,16 @@ export function useNfts() {
 export function useFetchMyNfts() {
   const { address } = useAccount();
   const configs = useContractsConfigOfCurrentChain();
-  return useReadContract({
+
+  const ret = useReadContract({
     ...configs.NFTMarketplace,
     functionName: "fetchMyNFTs",
     account: address,
   });
+
+  useMarketItemEventsCallback(ret.refetch);
+
+  return ret;
 }
 
 export function useMyNfts() {
@@ -143,11 +159,16 @@ export function useMyNfts() {
 export function useFetchItemsListed() {
   const { address } = useAccount();
   const configs = useContractsConfigOfCurrentChain();
-  return useReadContract({
+
+  const ret = useReadContract({
     ...configs.NFTMarketplace,
     functionName: "fetchItemsListed",
     account: address,
   });
+
+  useMarketItemEventsCallback(ret.refetch);
+
+  return ret;
 }
 
 export function useItemsListed() {
@@ -192,9 +213,10 @@ export function useCreateMarketSale() {
   const { writeContractAsync } = useWriteContract();
   const runTx = useRunTransactionFnWithToast();
   const client = usePublicClient();
+  const checkAndOpenConnectModal = useCheckConnect();
 
   return useMemoizedFn(async (tokenId: string) => {
-    if (!client) {
+    if (!client || !checkAndOpenConnectModal()) {
       return;
     }
 
@@ -221,9 +243,10 @@ export function useResellToken() {
   const runTx = useRunTransactionFnWithToast();
   const client = usePublicClient();
   const { data: listingPrice } = useListingPrice();
+  const checkAndOpenConnectModal = useCheckConnect();
 
   return useMemoizedFn(async (tokenId: string, price: bigint) => {
-    if (!client || listingPrice == null) {
+    if (!client || listingPrice == null || !checkAndOpenConnectModal()) {
       return;
     }
 

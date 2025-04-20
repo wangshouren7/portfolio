@@ -22,6 +22,25 @@ import { sepolia, hardhat } from "wagmi/chains";
 import { IS_DEV } from "@/modules/env";
 import { appConfig } from "@/app/config";
 
+const Toaster = ({ ...props }: ToasterProps) => {
+  const { theme = "system" } = useTheme();
+
+  return (
+    <Sonner
+      className="toaster group"
+      style={
+        {
+          "--normal-bg": "var(--popover)",
+          "--normal-text": "var(--popover-foreground)",
+          "--normal-border": "var(--border)",
+        } as React.CSSProperties
+      }
+      theme={theme as ToasterProps["theme"]}
+      {...props}
+    />
+  );
+};
+
 const themeOptions: Parameters<typeof darkTheme>[0] = {
   borderRadius: "small",
   accentColor: "var(--color-primary)",
@@ -66,7 +85,7 @@ interface IProvidersProps {
 
 export function ClientProviders({ children }: IProvidersProps) {
   return (
-    <ThemeProvider defaultTheme="dark" attribute={["class", "data-theme"]}>
+    <ThemeProvider attribute={["class", "data-theme"]} defaultTheme="dark">
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <RainbowkitProvider showRecentTransactions modalSize="wide">
@@ -80,22 +99,3 @@ export function ClientProviders({ children }: IProvidersProps) {
     </ThemeProvider>
   );
 }
-
-const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme();
-
-  return (
-    <Sonner
-      className="toaster group"
-      style={
-        {
-          "--normal-bg": "var(--popover)",
-          "--normal-text": "var(--popover-foreground)",
-          "--normal-border": "var(--border)",
-        } as React.CSSProperties
-      }
-      theme={theme as ToasterProps["theme"]}
-      {...props}
-    />
-  );
-};

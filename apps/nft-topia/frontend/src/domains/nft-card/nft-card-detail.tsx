@@ -8,9 +8,10 @@ import { AsyncButton } from "@/modules/ui/async-button";
 import { useAccount } from "wagmi";
 import { FormBuilder } from "@/modules/ui/form/form-builder";
 import { z } from "zod";
-import { type IComponentBaseProps, Input, mp } from "@pfl-wsr/ui";
+import { type IComponentBaseProps, mp } from "@pfl-wsr/ui";
 import { useTranslations } from "next-intl";
 import { parseEther } from "viem";
+import { InputEther } from "@/modules/ui/input-ether";
 
 const RESELL_SCHEMA = z.object({
   price: z.coerce.number().gt(0),
@@ -30,9 +31,7 @@ function ResellForm({ nft }: IResellFormProps) {
         {
           name: "price",
           label: t("Price"),
-          renderControl: (field) => (
-            <Input type="number" {...field} className="mt-0" />
-          ),
+          renderControl: (field) => <InputEther {...field} className="mt-0" />,
         },
       ]}
       schema={RESELL_SCHEMA}

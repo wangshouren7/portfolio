@@ -1,13 +1,15 @@
 import hre from "hardhat";
 import { vars } from "hardhat/config";
+import { OpenAI } from "openai";
+import { zodResponseFormat } from "openai/helpers/zod";
 
 import { PinataSDK } from "pinata";
 import { CHAIN_ID_TO_CONTRACT_CONFIG } from "..";
-import { faker } from "@faker-js/faker";
 import { parseEther } from "ethers";
 import { readdir } from "fs/promises";
 import { join } from "path";
 import { readFileSync } from "fs";
+import { z } from "zod";
 
 const ipfsClient = new PinataSDK({
   pinataJwt: vars.get("PINATA_JWT"),
@@ -15,6 +17,11 @@ const ipfsClient = new PinataSDK({
 });
 
 const uploadToken = async (file: string) => {
+  const openai = new OpenAI({
+    apiKey: vars.get("OPENAI_API_KEY"),
+    baseURL: vars.get("OPENAI_BASE_URL"),
+  });
+
   const blob = new Blob([readFileSync(file)]);
 
   const { cid } = await ipfsClient.upload.public.file(
@@ -22,10 +29,40 @@ const uploadToken = async (file: string) => {
   );
   const fileUrl = await ipfsClient.gateways.public.convert(cid);
 
+  const MathReasoning = z.object({
+    description: z.string(),
+    name: z.string(),
+  });
+  const response = await openai.beta.chat.completions.parse({
+    model: "gpt-4o-2024-08-06",
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: "I am going to create a NFT based on this image please help me generate name and description.",
+          },
+          {
+            type: "image_url",
+            image_url: {
+              url: fileUrl,
+            },
+          },
+        ],
+      },
+    ],
+    response_format: zodResponseFormat(MathReasoning, "math_reasoning"),
+  });
+
+  const result = response.choices[0].message;
+  const description = result.parsed?.description;
+  const name = result.parsed?.name;
+
   /** Agreed data structure */
   const tokenJSON = {
-    name: faker.commerce.productName(),
-    description: faker.lorem.paragraphs({ min: 1, max: 3 }),
+    name,
+    description,
     file: fileUrl,
     price: 100,
   };
@@ -41,16 +78,25 @@ const uploadToken = async (file: string) => {
 };
 
 async function main() {
-  const [creator, buyer] = await hre.ethers.getSigners();
+  const network = await hre.ethers.provider.getNetwork();
+  const chainId = network.chainId.toString();
   const nftMarketPlace = await hre.ethers.getContractAt(
     "NFTMarketplace",
-    CHAIN_ID_TO_CONTRACT_CONFIG[31337].NFTMarketplace.address,
+    CHAIN_ID_TO_CONTRACT_CONFIG[
+      chainId as unknown as keyof typeof CHAIN_ID_TO_CONTRACT_CONFIG
+    ].NFTMarketplace.address,
   );
 
+  const [creator, buyer] = await hre.ethers.getSigners();
+
+  if (!creator) {
+    throw new Error("Creator not found");
+  }
+
   const listingPrice = await nftMarketPlace.getListingPrice();
-  const files = (await readdir(join(__dirname, "./seed-images"))).map((x) =>
-    join(__dirname, "./seed-images", x),
-  );
+  const files = (await readdir(join(__dirname, "./seed-images")))
+    .filter((x) => x.endsWith(".jpg"))
+    .map((x) => join(__dirname, "./seed-images", x));
   for (let i = 0; i < files.length; i++) {
     try {
       const [tokenUrl, price, tokenJSON] = await uploadToken(files[i]);
@@ -65,6 +111,11 @@ async function main() {
   }
 
   const marketItems = await nftMarketPlace.fetchMarketItems();
+
+  if (!buyer) {
+    console.warn("No buyer found, skipping buy");
+    return;
+  }
 
   // buyer buys tokens
   for (let i = 0; i < 3; i++) {
