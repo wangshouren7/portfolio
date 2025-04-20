@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { useMenuItems } from "./navbar/use-menu-items";
 
 export const Dock: React.FC<IComponentBaseProps> = (props) => {
-  const menuItems = useMenuItems();
+  const menuItems = useMenuItems(true);
   const pathname = usePathname();
 
   return mp(
