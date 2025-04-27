@@ -8,9 +8,11 @@
   "license": "ISC",
   "packageManager": "pnpm@9.15.1+sha512.1acb565e6193efbebda772702950469150cf12bcc764262e7587e71d19dc98a423dff9536e57ea44c49bdf790ff694e83c27be5faa23d67e0c033b583be4bfcf",
   "devDependencies": {
+    "@pfl-wsr/configs": "workspace:*",
+    "@pfl-wsr/portfolio-frontend": "link:apps/portfolio/frontend",
+    "@tailwindcss/typography": "^0.5.16",
     "jiti": "^2.4.2",
-    "turbo": "^2.4.4",
-    "@pfl-wsr/configs": "workspace:*"
+    "turbo": "^2.4.4"
   },
   "resolutions": {
     "react": "19.0.0",
@@ -36,5 +38,9 @@
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   }
 }

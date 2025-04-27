@@ -9,17 +9,16 @@ export default function Home() {
       <Background
         fill
         priority
-        className="-z-50 h-full w-full object-cover object-center opacity-50"
+        className="h-full w-full object-cover object-center opacity-50"
         sizes="100vw"
         variant="home"
       />
 
-      <div className="h-screen w-full">
-        <Navigation />
-
-        <RenderModel>
+      <div className="relative h-full w-full">
+        <RenderModel className="!absolute top-0 left-0">
           <Wizard />
         </RenderModel>
+        <Navigation />
       </div>
     </main>
   );

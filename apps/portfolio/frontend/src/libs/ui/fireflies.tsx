@@ -32,7 +32,7 @@ export const Fireflies = (props: IComponentBaseProps) => {
 
   return mp(
     props,
-    <div className="fixed top-0 left-0 -z-10 h-full w-full overflow-hidden">
+    <div className="fixed top-0 left-0 h-full w-full overflow-hidden">
       {fireflies.map((firefly) => (
         <div
           key={firefly.id}

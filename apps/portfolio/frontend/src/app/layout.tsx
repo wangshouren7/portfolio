@@ -25,9 +25,9 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-background text-foreground antialiased`}
       >
+        <Fireflies />
         {children}
         <Audio className="fixed top-4 right-4" />
-        <Fireflies />
       </body>
     </html>
   );

@@ -13,7 +13,7 @@ const RenderModel = (props: RenderModelProps) => {
   return mp(
     props,
     <Canvas
-      className={"relative -z-10 h-screen w-screen"}
+      className={"h-screen w-screen"}
       dpr={[1, 2]}
       shadows={false}
       // dpr is the device pixel ratio. Here we are setting it to 1 and 2 for retina displays to

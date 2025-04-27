@@ -15,6 +15,7 @@
     "@pfl-wsr/ui": "workspace:*",
     "@react-three/drei": "^10.0.4",
     "@react-three/fiber": "^9.1.0",
+    "daisyui": "5",
     "lodash-es": "^4",
     "lucide-react": "^0.396.0",
     "motion": "^12",

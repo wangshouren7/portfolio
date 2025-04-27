@@ -2,7 +2,15 @@
 @source "../../node_modules/@pfl-wsr/ui";
 
 @import "tailwindcss";
+
 @plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
+
+@plugin "daisyui" {
+  themes:
+    light --default,
+    dark --prefersdark;
+}
 
 @layer components {
   .bg-control {

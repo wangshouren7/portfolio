@@ -1,5 +1,5 @@
 const getGithubStatsUrl = (url: string) =>
-  `${process.env.NEXT_PUBLIC_GITHUB_STATS_URL}${url}&theme=transparent&hide_border=true&title_color=FEFE5B&text_color=FFFFFF&icon_color=FEFE5B&text_bold=false&hide=html,javascript`;
+  `${process.env.NEXT_PUBLIC_GITHUB_STATS_URL}${url}&theme=transparent&hide_border=true&title_color=00d3bb&text_color=FFFFFF&icon_color=00d3bb&text_bold=false&hide=html,javascript`;
 
 const skills = [
   "ts",
@@ -98,7 +98,7 @@ export const about = {
     },
     {
       alt: "Streak",
-      src: `${process.env.NEXT_PUBLIC_GITHUB_STREAK_STATS_URL}?user=wangshouren7&theme=dark&hide_border=true&type=svg&background=EB545400&ring=FEFE5B&currStreakLabel=FEFE5B`,
+      src: `${process.env.NEXT_PUBLIC_GITHUB_STREAK_STATS_URL}?user=wangshouren7&theme=dark&hide_border=true&type=svg&background=EB545400&ring=00d3bb&currStreakLabel=00d3bb`,
       sizeClassName: "lg:col-span-6 !p-0",
     },
     {

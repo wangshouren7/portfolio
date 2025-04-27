@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { toast, Toaster } from "@pfl-wsr/ui";
 import emailjs from "@emailjs/browser";
 import { lg } from "../logger";
+import { Background } from "../assets";
 
 interface IFormValues {
   name: string;
@@ -77,6 +78,13 @@ export function Contact() {
 
   return (
     <div className="flex h-screen w-screen items-center justify-center px-16">
+      <Background
+        fill
+        priority
+        className="!fixed top-0 left-0 h-full w-full object-cover object-center opacity-50"
+        sizes="100vw"
+        variant="contact"
+      />
       <Toaster richColors />
 
       <article className="relative flex w-full flex-col items-center justify-center space-y-16 py-8 sm:py-0">
